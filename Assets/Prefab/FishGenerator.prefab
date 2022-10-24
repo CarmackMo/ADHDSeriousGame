@@ -47,7 +47,7 @@ MonoBehaviour:
   smallFish: {fileID: 2810446454501087125, guid: 84aca2177c15947489636d6a9db47592, type: 3}
   largeFish: {fileID: 0}
   mediumFish: {fileID: 0}
-  shark: {fileID: 0}
+  shark: {fileID: 2810446454501087125, guid: 61358d454c1f69644b2139d3a25b8418, type: 3}
   spawnInterval: {x: 2, y: 4}
   leftBound: -11
   rightBound: 11

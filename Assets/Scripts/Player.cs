@@ -19,7 +19,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        
     }
 
     void Update()
@@ -40,5 +39,18 @@ public class Player : MonoBehaviour
         rigidBody.velocity = new Vector3(directionX * speed, 0, 0);
 
 
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Shark shark = other.GetComponent<Shark>();
+        if (shark != null)
+        {
+            DamagePanel.Instance.ShowHideEffect();
+
+
+            Debug.Log("Hit shark!!");
+        }
     }
 }

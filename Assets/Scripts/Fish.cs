@@ -7,8 +7,16 @@ public class Fish : MonoBehaviour
     public float speed;
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         transform.Translate(new Vector3(0, 0, -speed) * Time.deltaTime);
+    }
+
+    protected void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "WallBack")
+        {
+            ObjectPoolManager.Instance.Despawn(gameObject);
+        }
     }
 }
