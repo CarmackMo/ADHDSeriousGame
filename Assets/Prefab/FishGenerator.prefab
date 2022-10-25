@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smallFish: {fileID: 5409062342491650926, guid: 93b803aa25fd5be4daf4610bec854b31, type: 3}
-  largeFish: {fileID: 0}
-  mediumFish: {fileID: 0}
+  largeFish: {fileID: 5409062342491650926, guid: e73332af7ae6e374bb8735aab11c57f8, type: 3}
+  mediumFish: {fileID: 5409062342491650926, guid: a433a0e059652214f985d4f24dcf1946, type: 3}
   shark: {fileID: 5409062342491650926, guid: 6af48cadd9ac76b4d992a26b42fbe3fc, type: 3}
   spawnInterval: {x: 2, y: 4}
   leftBound: -11

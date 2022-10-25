@@ -6,15 +6,15 @@ public class FishGenerator : MonoBehaviour
 {
 
     public GameObject smallFish;
-    public GameObject largeFish;
     public GameObject mediumFish;
+    public GameObject largeFish;
     public GameObject shark;
 
     public Vector2 spawnInterval;
     public float leftBound;
     public float rightBound;
 
-    private enum FishType {SMALL, SHARK};
+    private enum FishType {SMALL, MEDIUM, LARGE, SHARK};
 
     private void Start()
     {
@@ -43,6 +43,12 @@ public class FishGenerator : MonoBehaviour
             {
                 case FishType.SMALL:
                     ObjectPoolManager.Instance.Spawn(smallFish, spawnPos, Quaternion.identity);
+                    break;
+                case FishType.MEDIUM:
+                    ObjectPoolManager.Instance.Spawn(mediumFish, spawnPos, Quaternion.identity);
+                    break;
+                case FishType.LARGE:
+                    ObjectPoolManager.Instance.Spawn(largeFish, spawnPos, Quaternion.identity);
                     break;
                 case FishType.SHARK:
                     ObjectPoolManager.Instance.Spawn(shark, spawnPos, Quaternion.identity);
