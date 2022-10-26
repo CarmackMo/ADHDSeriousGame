@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FishGenerator : MonoBehaviour
+public class FishGenerator : Singleton<FishGenerator>
 {
+    public List<GameObject> catchableFishList = new List<GameObject>();
+
 
     public GameObject smallFish;
     public GameObject mediumFish;
@@ -16,15 +18,38 @@ public class FishGenerator : MonoBehaviour
 
     private enum FishType {SMALL, MEDIUM, LARGE, SHARK};
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         StartCoroutine(FishSpawnCoroutine());   
     }
 
 
-    void Update()
+    protected override void Update()
     {
-        
+        base.Update();
+    }
+
+
+    public void AddCatchableFish(GameObject obj)
+    {
+        if (obj.GetComponent<Shark>() == null)
+            catchableFishList.Add(obj);
+    }
+
+    public void CatchFish()
+    {
+        if (catchableFishList.Count > 0)
+        {
+            GameObject fish = catchableFishList[0];
+            catchableFishList.Remove(fish);
+
+            CatchLabelManager.Instance.RemoveCatchLabel(fish.GetComponent<Fish>());
+            ObjectPoolManager.Instance.Despawn(fish);
+            Player.Instance.AddFishCatchNum();
+            GamePanel.Instance.UpdateFishNumText();
+        }
     }
 
 

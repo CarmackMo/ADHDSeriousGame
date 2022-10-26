@@ -20,6 +20,18 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     }
 
 
+    protected virtual void Start()
+    {
+
+    }
+
+
+    protected virtual void Update()
+    {
+
+    }
+
+
     protected virtual void OnDestroy()
     {
         instance = null;

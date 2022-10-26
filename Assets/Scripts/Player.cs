@@ -3,27 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Player : MonoBehaviour
+public class Player : Singleton<Player>
 {
     public float speed;
+    public int fishCatchNum = 0;
 
 
     private Rigidbody rigidBody;
     private float directionX;
 
-    void Awake()
+
+    protected override void Awake()
     {
+        base.Awake();
+
         rigidBody = GetComponent<Rigidbody>();    
     }
 
 
-    void Start()
+    protected override void Update()
     {
+        base.Update();
+
+        PlayerMovement();
     }
 
-    void Update()
+
+    public void AddFishCatchNum()
     {
-        PlayerMovement();
+        fishCatchNum++;
     }
 
 
@@ -33,6 +41,9 @@ public class Player : MonoBehaviour
         directionX = Input.acceleration.x;
 #else
         directionX = Input.GetAxis("Horizontal");
+
+        if (Input.GetKey(KeyCode.Space))
+            GamePanel.Instance.OnClickFishingBtn();
 #endif
 
             

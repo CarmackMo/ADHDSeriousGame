@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class DamagePanel : Singleton<DamagePanel>
 {
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         Hide();       
     }
 

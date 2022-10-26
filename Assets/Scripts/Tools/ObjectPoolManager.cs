@@ -29,7 +29,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             obj = stack.Pop();
             obj.transform.position = position;
             obj.transform.rotation = quaternion;
-            obj.transform.parent = parent;
+            obj.transform.SetParent(parent);
         }
 
         obj.SetActive(true);
