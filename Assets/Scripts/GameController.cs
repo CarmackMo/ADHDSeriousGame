@@ -24,6 +24,13 @@ public class GameController : Singleton<GameController>
         PauseGame();
     }
 
+    protected override void Update()
+    {
+        base.Update();
+
+        RotateSky();
+    }
+
     public void PauseGame()
     {
         MenuPanel.Instance.Show();
@@ -45,4 +52,10 @@ public class GameController : Singleton<GameController>
         SceneManager.LoadScene(0);
     }
 
+
+    public void RotateSky()
+    {
+        float num = Camera.main.GetComponent<Skybox>().material.GetFloat("_Rotation");
+        Camera.main.GetComponent<Skybox>().material.SetFloat("_Rotation", num + 0.006f);
+    }
 }
