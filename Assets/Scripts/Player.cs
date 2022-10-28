@@ -44,12 +44,34 @@ public class Player : Singleton<Player>
 
         if (Input.GetKey(KeyCode.Space))
             GamePanel.Instance.OnClickFishingBtn();
+        else if (Input.GetKey(KeyCode.Escape))
+            GameController.Instance.PauseGame();
 #endif
 
             
         rigidBody.velocity = new Vector3(directionX * speed, 0, 0);
+    }
 
+    public void CatchFish()
+    {
+        Fish catchableFish = null;
+        foreach(Fish fish in FishManager.Instance.fishList)
+        {
+            if (fish.catchable == true)
+            {
+                catchableFish = fish;
+                break;
+            }
+        }
 
+        if (catchableFish != null)
+        {
+            fishCatchNum++;
+            FishManager.Instance.RemoveFish(catchableFish);
+            CatchLabelManager.Instance.RemoveCatchLabel(catchableFish);
+            ObjectPoolManager.Instance.Despawn(catchableFish.gameObject);
+            GamePanel.Instance.UpdateFishNumText();
+        }
     }
 
 
@@ -59,9 +81,6 @@ public class Player : Singleton<Player>
         if (shark != null)
         {
             DamagePanel.Instance.ShowHideEffect();
-
-
-            Debug.Log("Hit shark!!");
         }
     }
 }

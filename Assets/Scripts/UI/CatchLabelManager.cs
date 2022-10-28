@@ -45,9 +45,9 @@ public class CatchLabelManager : Singleton<CatchLabelManager>
         if (fish.GetComponent<Shark>() == null)
         {
             GameObject label = catchLabelDict[fish];
-            ObjectPoolManager.Instance.Despawn(label);
-
             catchLabelDict.Remove(fish);
+
+            ObjectPoolManager.Instance.Despawn(label);
         }
     }
 
