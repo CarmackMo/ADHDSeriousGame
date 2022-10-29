@@ -45,7 +45,10 @@ public class Player : Singleton<Player>
         if (Input.GetKey(KeyCode.Space))
             GamePanel.Instance.OnClickFishingBtn();
         else if (Input.GetKey(KeyCode.Escape))
+        {
             GameController.Instance.PauseGame();
+            MenuPanel.Instance.Show();
+        }
 #endif
 
             

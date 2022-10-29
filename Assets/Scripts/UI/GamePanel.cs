@@ -10,10 +10,12 @@ public class GamePanel : Singleton<GamePanel>
     public Button fishingBtn;
     public Button pauseBtn;
 
-    public GameObject countDown;
+    public GameObject initCountDown;
+    public GameObject gameCountDown;
 
     public TextMeshProUGUI fishNumText;
-    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI initTimerText;
+    public TextMeshProUGUI gameTimerText;
 
     protected override void Awake()
     {
@@ -30,10 +32,10 @@ public class GamePanel : Singleton<GamePanel>
         Inite();
     }
 
-
     public void Inite()
     {
-        countDown.SetActive(true);
+        initCountDown.SetActive(true);
+        gameCountDown.SetActive(false);
     }
 
     public void OnClickFishingBtn()
@@ -44,6 +46,7 @@ public class GamePanel : Singleton<GamePanel>
     public void OnClickPauseBtn()
     {
         GameController.Instance.PauseGame();
+        MenuPanel.Instance.Show();
     }
 
     public void UpdateFishNumText()
@@ -51,25 +54,27 @@ public class GamePanel : Singleton<GamePanel>
         fishNumText.text = $"{Player.Instance.fishCatchNum}";
     }
 
-    public void StartCountDown()
+    public void UpdateInitTimerText(float second)
     {
-        StartCoroutine(GameStartCountDownCoroutine());
+        initTimerText.text = $"{(int)second}";
     }
 
-    public IEnumerator GameStartCountDownCoroutine()
+    public void UpdateGameTimer(float second)
     {
-        float timer = 4f;
+        string text = "";
+        float sec = second % 60;
+        float min = second / 60;
 
-        while (timer > 0)
-        {
-            timer -= 1;
-            timerText.text = $"{(int)timer}";
-            
-            yield return new WaitForSecondsRealtime(1f);
-        }
+        if (min < 10)
+            text += $"0{(int)min}";
+        else
+            text += $"{(int)min}";
 
-        countDown.SetActive(false);
-        GameController.Instance.StartGame();
-        yield break;
+        if (sec < 10)
+            text += $":0{(int)sec}";
+        else
+            text += $":{(int)sec}";
+
+        gameTimerText.text = text;
     }
 }
