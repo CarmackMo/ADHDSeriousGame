@@ -12,6 +12,7 @@ public class GamePanel : Singleton<GamePanel>
 
     public GameObject initCountDown;
     public GameObject gameCountDown;
+    public GameObject catchingPanel;
 
     public TextMeshProUGUI fishNumText;
     public TextMeshProUGUI initTimerText;

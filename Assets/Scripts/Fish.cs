@@ -6,11 +6,12 @@ public class Fish : MonoBehaviour
 {
     public float speed;
     public bool catchable = false;
+    public bool isHooked = false;
 
 
     protected void Update()
     {
-        transform.Translate(new Vector3(0, 0, -speed) * Time.deltaTime);
+        FishMovement();
     }
 
     protected void OnTriggerEnter(Collider other)
@@ -34,6 +35,13 @@ public class Fish : MonoBehaviour
     public void Init()
     {
         catchable = false;
+        isHooked = false;
+    }
+
+    public void FishMovement()
+    {
+        if (!isHooked)
+            transform.Translate(new Vector3(0, 0, -speed) * Time.deltaTime);
     }
 
 }

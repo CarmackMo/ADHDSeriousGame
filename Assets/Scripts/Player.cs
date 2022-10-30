@@ -69,11 +69,15 @@ public class Player : Singleton<Player>
 
         if (catchableFish != null)
         {
-            fishCatchNum++;
-            FishManager.Instance.RemoveFish(catchableFish);
-            CatchLabelManager.Instance.RemoveCatchLabel(catchableFish);
-            ObjectPoolManager.Instance.Despawn(catchableFish.gameObject);
-            GamePanel.Instance.UpdateFishNumText();
+            /* Instance fish catching */
+            //fishCatchNum++;
+            //FishManager.Instance.RemoveFish(catchableFish);
+            //CatchLabelManager.Instance.RemoveCatchLabel(catchableFish);
+            //ObjectPoolManager.Instance.Despawn(catchableFish.gameObject);
+            //GamePanel.Instance.UpdateFishNumText();
+
+            catchableFish.isHooked = true;
+            GamePanel.Instance.catchingPanel.gameObject.SetActive(true);
         }
     }
 
