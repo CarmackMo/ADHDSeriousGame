@@ -78,7 +78,6 @@ public class Player : Singleton<Player>
         }
 #endif
 
-            
         rigidBody.velocity = new Vector3(directionX * speed, 0, 0);
     }
 
@@ -114,6 +113,11 @@ public class Player : Singleton<Player>
     }
 
 
+    public void AddRhythm()
+    {
+        tmpRhythmAmount = tmpRhythmAmount > threshold ? threshold : tmpRhythmAmount + rhythmGainSpeed * Time.deltaTime;
+    }
+
 
     IEnumerator FishCatchCoroutine(Fish fish)
     {
@@ -129,7 +133,7 @@ public class Player : Singleton<Player>
         GamePanel.Instance.UpdateTargetArea(targetStartPos, targetAmount);
         GamePanel.Instance.UpdateCatchingPanel(true);
 
-        while (tmpProgressAmount > 0 && tmpProgressAmount < threshold)
+        while (tmpProgressAmount >= 0 && tmpProgressAmount < threshold)
         {
             tmpRhythmAmount = tmpRhythmAmount > 0 ? tmpRhythmAmount - (rhythmDeclaySpeed * Time.deltaTime) : 0;
             tmpProgressAmount = tmpProgressAmount > 0 ? tmpProgressAmount - progressDeclaySpeed * Time.deltaTime : 0;

@@ -65,7 +65,7 @@ public class GamePanel : Singleton<GamePanel>
     public void OnPressFishingBtn()
     {
         if (isPressFishBtn && Player.Instance.IsCatching)
-            Player.Instance.tmpRhythmAmount += Player.Instance.rhythmGainSpeed * Time.deltaTime;
+            Player.Instance.AddRhythm();
     }
 
     public void OnClickPauseBtn()
