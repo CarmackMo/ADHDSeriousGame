@@ -13,7 +13,7 @@ public class DamagePanel : Singleton<DamagePanel>
 
      
 
-    public void ShowHideEffect()
+    public void ShowHitEffect()
     {
         Show();
         Invoke(nameof(Hide), 0.25f);

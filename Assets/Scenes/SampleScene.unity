@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.34119543, g: 0.3192904, b: 0.3087492, a: 1}
+  m_IndirectSpecularColor: {r: 0.28451276, g: 0.39956486, b: 0.43200958, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -850,6 +850,30 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 309897674364292068, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 309897674364292068, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 798067389319842839, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 798067389319842839, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 798067389319842839, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 798067389319842839, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1065436938560908026, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -864,6 +888,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1065436938560908026, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951438850647611522, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951438850647611522, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951438850647611522, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951438850647611522, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2338273779548090542, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2338273779548090542, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2338273779548090542, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2984092719549810974, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
@@ -1021,6 +1073,14 @@ PrefabInstance:
     - target: {fileID: 8012314853098703015, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
       propertyPath: m_Name
       value: GamePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137727349775544424, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137727349775544424, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0b002f59076dbe46bd931e2210d24b1, type: 3}
@@ -1515,6 +1575,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4307177888555527689, guid: d23f0d6384f9cb94ca3ae675a76ceff2, type: 3}
+      propertyPath: gameTime
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 6106585846905736388, guid: d23f0d6384f9cb94ca3ae675a76ceff2, type: 3}
       propertyPath: m_Name
       value: GameController

@@ -78,6 +78,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  rhythmDeclaySpeed: 100
+  rhythmGainSpeed: 220
+  progressDeclaySpeed: 10
+  progressGainSpeed: 20
+  threshold: 100
+  targetLimit: 15
+  targetLowBound: 15
+  targetUpBound: 50
+  rhythmAmount: 0
+  tmpRhythmAmount: 0
+  progressAmount: 25
+  tmpProgressAmount: 0
 --- !u!1001 &2953530832720093647
 PrefabInstance:
   m_ObjectHideFlags: 0

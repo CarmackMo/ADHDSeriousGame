@@ -6,11 +6,32 @@ using UnityEngine;
 public class Player : Singleton<Player>
 {
     public float speed;
-    public int fishCatchNum = 0;
+
+    public float rhythmDeclaySpeed;
+    public float rhythmGainSpeed;
+    public float progressDeclaySpeed;
+    public float progressGainSpeed;
+    public float threshold;
+    public float targetLimit;
+    public float targetLowBound;
+    public float targetUpBound;
+    [HideInInspector]
+    public float rhythmAmount = 0f;
+    [HideInInspector]
+    public float tmpRhythmAmount;
+
+    public float progressAmount = 12f;
+    [HideInInspector]
+    public float tmpProgressAmount;
 
 
     private Rigidbody rigidBody;
+    private int fishCatchNum = 0;
     private float directionX;
+    private bool isCatching = false;
+
+
+    public bool IsCatching => isCatching;
 
 
     protected override void Awake()
@@ -20,12 +41,19 @@ public class Player : Singleton<Player>
         rigidBody = GetComponent<Rigidbody>();    
     }
 
-
     protected override void Update()
     {
         base.Update();
 
         PlayerMovement();
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        Shark shark = other.GetComponent<Shark>();
+        if (shark != null)
+        {
+            DamagePanel.Instance.ShowHitEffect();
+        }
     }
 
 
@@ -33,7 +61,6 @@ public class Player : Singleton<Player>
     {
         fishCatchNum++;
     }
-
 
     private void PlayerMovement()
     {
@@ -55,7 +82,7 @@ public class Player : Singleton<Player>
         rigidBody.velocity = new Vector3(directionX * speed, 0, 0);
     }
 
-    public void CatchFish()
+    public void HookFish()
     {
         Fish catchableFish = null;
         foreach(Fish fish in FishManager.Instance.fishList)
@@ -75,19 +102,62 @@ public class Player : Singleton<Player>
             //CatchLabelManager.Instance.RemoveCatchLabel(catchableFish);
             //ObjectPoolManager.Instance.Despawn(catchableFish.gameObject);
             //GamePanel.Instance.UpdateFishNumText();
-
-            catchableFish.isHooked = true;
-            GamePanel.Instance.catchingPanel.gameObject.SetActive(true);
+            
+            if (!isCatching)
+            {
+                isCatching = true;
+                catchableFish.isHooked = true;
+                GamePanel.Instance.catchingPanel.gameObject.SetActive(true);
+                StartCoroutine(FishCatchCoroutine(catchableFish));
+            }
         }
     }
 
 
-    private void OnTriggerEnter(Collider other)
+
+    IEnumerator FishCatchCoroutine(Fish fish)
     {
-        Shark shark = other.GetComponent<Shark>();
-        if (shark != null)
+        tmpRhythmAmount = rhythmAmount;
+        tmpProgressAmount = progressAmount;
+
+        float targetAmount = Random.Range(targetLowBound, targetUpBound);
+        float targetStartPos = Random.Range(targetLimit, 100 - targetLimit - targetAmount);
+        float targetEndPos = targetStartPos + targetAmount;
+
+        GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount);
+        GamePanel.Instance.UpdateCatchingProgress(tmpProgressAmount, threshold);
+        GamePanel.Instance.UpdateTargetArea(targetStartPos, targetAmount);
+        GamePanel.Instance.UpdateCatchingPanel(true);
+
+        while (tmpProgressAmount > 0 && tmpProgressAmount < threshold)
         {
-            DamagePanel.Instance.ShowHideEffect();
+            tmpRhythmAmount = tmpRhythmAmount > 0 ? tmpRhythmAmount - (rhythmDeclaySpeed * Time.deltaTime) : 0;
+            tmpProgressAmount = tmpProgressAmount > 0 ? tmpProgressAmount - progressDeclaySpeed * Time.deltaTime : 0;
+
+            if (tmpRhythmAmount >= targetStartPos && tmpRhythmAmount <= targetEndPos)
+            {
+                tmpProgressAmount += progressGainSpeed * Time.deltaTime;
+            }
+
+            GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount);
+            GamePanel.Instance.UpdateCatchingProgress(tmpProgressAmount, threshold);
+            yield return new WaitForEndOfFrame();
         }
+
+        FishManager.Instance.RemoveFish(fish);
+        CatchLabelManager.Instance.RemoveCatchLabel(fish);
+        ObjectPoolManager.Instance.Despawn(fish.gameObject);
+        GamePanel.Instance.UpdateTargetArea(-targetStartPos, -targetAmount);
+        GamePanel.Instance.UpdateCatchingPanel(false);
+
+        if (tmpProgressAmount >= threshold)
+        {
+            fishCatchNum++;
+            GamePanel.Instance.UpdateFishNumText(fishCatchNum);
+        }
+
+        isCatching = false;
+        yield break;
     }
+
 }
