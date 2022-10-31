@@ -124,7 +124,7 @@ public class Player : Singleton<Player>
         float targetStartPos = Random.Range(targetLimit, 100 - targetLimit - targetAmount);
         float targetEndPos = targetStartPos + targetAmount;
 
-        GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount);
+        GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount, threshold);
         GamePanel.Instance.UpdateCatchingProgress(tmpProgressAmount, threshold);
         GamePanel.Instance.UpdateTargetArea(targetStartPos, targetAmount);
         GamePanel.Instance.UpdateCatchingPanel(true);
@@ -139,7 +139,7 @@ public class Player : Singleton<Player>
                 tmpProgressAmount += progressGainSpeed * Time.deltaTime;
             }
 
-            GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount);
+            GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount, threshold);
             GamePanel.Instance.UpdateCatchingProgress(tmpProgressAmount, threshold);
             yield return new WaitForEndOfFrame();
         }
@@ -156,8 +156,14 @@ public class Player : Singleton<Player>
             GamePanel.Instance.UpdateFishNumText(fishCatchNum);
         }
 
-        isCatching = false;
+        //isCatching = false;
+        Invoke(nameof(UnsetPlayerCatching), 1f);
         yield break;
+    }
+
+    private void UnsetPlayerCatching()
+    {
+        isCatching = false;
     }
 
 }

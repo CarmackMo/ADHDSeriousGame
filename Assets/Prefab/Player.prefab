@@ -78,13 +78,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  rhythmDeclaySpeed: 100
+  rhythmDeclaySpeed: 80
   rhythmGainSpeed: 220
   progressDeclaySpeed: 10
   progressGainSpeed: 20
   threshold: 100
   targetLimit: 15
-  targetLowBound: 15
+  targetLowBound: 20
   targetUpBound: 50
   rhythmAmount: 0
   tmpRhythmAmount: 0

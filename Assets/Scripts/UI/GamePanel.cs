@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using TMPro;
 
 
@@ -22,13 +24,16 @@ public class GamePanel : Singleton<GamePanel>
     public TextMeshProUGUI initTimerText;
     public TextMeshProUGUI gameTimerText;
 
+    private bool isPressFishBtn = false;
+
+    public bool IsPressFishBtn { get { return isPressFishBtn; } set { isPressFishBtn = value;} }
+
     protected override void Awake()
     {
         base.Awake();
 
         fishingBtn.onClick.AddListener(OnClickFishingBtn);
         pauseBtn.onClick.AddListener(OnClickPauseBtn);
-
     }
 
     protected override void Start()
@@ -36,6 +41,13 @@ public class GamePanel : Singleton<GamePanel>
         base.Start();
 
         Inite();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        OnPressFishingBtn();
     }
 
     public void Inite()
@@ -46,13 +58,14 @@ public class GamePanel : Singleton<GamePanel>
 
     public void OnClickFishingBtn()
     {
-        if (Player.Instance.IsCatching)
-            Player.Instance.tmpRhythmAmount += Player.Instance.rhythmGainSpeed * Time.deltaTime;
-        else
+        if (!Player.Instance.IsCatching)
             Player.Instance.HookFish();
+    }
 
-
-        Debug.Log("@@@@@@@@@@@@@@@@@@@@@");
+    public void OnPressFishingBtn()
+    {
+        if (isPressFishBtn && Player.Instance.IsCatching)
+            Player.Instance.tmpRhythmAmount += Player.Instance.rhythmGainSpeed * Time.deltaTime;
     }
 
     public void OnClickPauseBtn()
@@ -60,6 +73,7 @@ public class GamePanel : Singleton<GamePanel>
         GameController.Instance.PauseGame();
         MenuPanel.Instance.Show();
     }
+
 
     public void UpdateFishNumText(int fishCatchNum)
     {
@@ -95,9 +109,9 @@ public class GamePanel : Singleton<GamePanel>
         catchingPanel.gameObject.SetActive(visibility);
     }
 
-    public void UpdateCatchingRhythm(float rhythmAmount)
+    public void UpdateCatchingRhythm(float rhythmAmount, float threshold)
     {
-        rhythmImage.fillAmount = rhythmAmount / 100f;
+        rhythmImage.fillAmount = rhythmAmount / threshold;
     }
 
     public void UpdateCatchingProgress(float progressAmount, float threshold)
