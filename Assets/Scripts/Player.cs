@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class Player : Singleton<Player>
@@ -23,7 +24,7 @@ public class Player : Singleton<Player>
     public float progressAmount = 12f;
     [HideInInspector]
     public float tmpProgressAmount;
-
+    public Image hookDirtImage;
 
     private Rigidbody rigidBody;
     private int fishCatchNum = 0;
@@ -60,12 +61,6 @@ public class Player : Singleton<Player>
             sharkHitNum++;
             DamagePanel.Instance.ShowHitEffect();
         }
-    }
-
-
-    public void AddFishCatchNum()
-    {
-        fishCatchNum++;
     }
 
     private void PlayerMovement()
@@ -111,12 +106,15 @@ public class Player : Singleton<Player>
         }
     }
 
+    public void AddFishCatchNum()
+    {
+        fishCatchNum++;
+    }
 
     public void AddRhythm()
     {
         tmpRhythmAmount = tmpRhythmAmount > threshold ? threshold : tmpRhythmAmount + rhythmGainSpeed * Time.deltaTime;
     }
-
 
     IEnumerator FishCatchCoroutine(Fish fish)
     {
@@ -170,6 +168,11 @@ public class Player : Singleton<Player>
     private void UnsetPlayerCatching()
     {
         isCatching = false;
+    }
+
+    public void UpdateCanvasVisiability(bool visiability)
+    {
+        hookDirtImage.gameObject.SetActive(visiability);
     }
 
 }

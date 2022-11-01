@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using TMPro;
+using TouchScript.Gestures;
 
 
 public class GamePanel : Singleton<GamePanel>
@@ -23,6 +25,11 @@ public class GamePanel : Singleton<GamePanel>
     public TextMeshProUGUI fishNumText;
     public TextMeshProUGUI initTimerText;
     public TextMeshProUGUI gameTimerText;
+
+
+    public LongPressGesture longPressGesture;
+    public ReleaseGesture releaseGesture;
+
 
     private bool isPressFishBtn = false;
 
@@ -48,6 +55,18 @@ public class GamePanel : Singleton<GamePanel>
         base.Update();
 
         OnPressFishingBtn();
+    }
+
+    protected void OnEnable()
+    {
+        longPressGesture.StateChanged += LongPressedHandler;
+        releaseGesture.Released += ReleaseHandler;
+    }
+
+    protected void OnDisable()
+    {
+        longPressGesture.StateChanged -= LongPressedHandler;
+        releaseGesture.Released -= ReleaseHandler;
     }
 
     public void Inite()
@@ -129,4 +148,26 @@ public class GamePanel : Singleton<GamePanel>
         layoutGroup.spacing = targetAmount / 100 * rhythmImage.GetComponent<RectTransform>().sizeDelta.x;
     }
 
+    private void LongPressedHandler(object sender, GestureStateChangeEventArgs e)
+    {
+        Debug.Log("Detect long press!!!!!!!");
+        if (e.State == Gesture.GestureState.Recognized)
+        {
+            Player.Instance.UpdateCanvasVisiability(true);
+        }
+        else if (e.State == Gesture.GestureState.Failed)
+        {
+            Player.Instance.UpdateCanvasVisiability(false);
+        }
+        else if (e.State == Gesture.GestureState.Ended)
+        {
+            Player.Instance.UpdateCanvasVisiability(false);
+        }
+    }
+
+    private void ReleaseHandler(object sender, EventArgs e)
+    {
+        Debug.Log("Detect release@@@@@@@");
+        Player.Instance.UpdateCanvasVisiability(false);
+    }
 }
