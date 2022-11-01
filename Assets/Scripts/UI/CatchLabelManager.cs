@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class CatchLabelManager : Singleton<CatchLabelManager>
 {
-    public GameObject labelPrefab;
-    public Dictionary<Fish, GameObject> catchLabelDict = new Dictionary<Fish, GameObject>();
-
     public Camera camera;
     public Canvas canvas;
+    public GameObject labelPrefab;
 
+    private Dictionary<Fish, CatchLabel> catchLabelDict = new Dictionary<Fish, CatchLabel>();
 
     protected override void Start()
     {
@@ -19,14 +18,12 @@ public class CatchLabelManager : Singleton<CatchLabelManager>
         camera = Camera.main;
     }
 
-
     protected override void Update()
     {
         base.Update();
 
         UpdateCatchLabel();
     }
-
 
     public void AddCatchLable(Fish fish)
     {
@@ -35,7 +32,9 @@ public class CatchLabelManager : Singleton<CatchLabelManager>
             Vector3 fishPos = fish.transform.position;
             Vector3 labelPos = camera.WorldToScreenPoint(fishPos);
 
-            GameObject label = ObjectPoolManager.Instance.Spawn(labelPrefab, labelPos, Quaternion.identity, canvas.transform);
+            GameObject labelObj = ObjectPoolManager.Instance.Spawn(labelPrefab, labelPos, Quaternion.identity, canvas.transform);
+            CatchLabel label = labelObj.GetComponent<CatchLabel>();
+            label.Init();
             catchLabelDict.Add(fish, label);
         }
     }
@@ -44,11 +43,16 @@ public class CatchLabelManager : Singleton<CatchLabelManager>
     {
         if (fish.GetComponent<Shark>() == null)
         {
-            GameObject label = catchLabelDict[fish];
+            CatchLabel label = catchLabelDict[fish];
             catchLabelDict.Remove(fish);
 
-            ObjectPoolManager.Instance.Despawn(label);
+            ObjectPoolManager.Instance.Despawn(label.gameObject);
         }
+    }
+
+    public CatchLabel GetCatchLabel(Fish fish)
+    {
+        return catchLabelDict[fish];
     }
 
     private void UpdateCatchLabel()
