@@ -27,11 +27,16 @@ public class Player : Singleton<Player>
 
     private Rigidbody rigidBody;
     private int fishCatchNum = 0;
+    private int sharkHitNum = 0;
+    private float fishCatchTime = 0;
     private float directionX;
     private bool isCatching = false;
 
 
     public bool IsCatching => isCatching;
+    public int FishCatchNum => fishCatchNum;
+    public int SharkHitNum => sharkHitNum;
+    public float FishCatchTime => fishCatchTime;
 
 
     protected override void Awake()
@@ -52,6 +57,7 @@ public class Player : Singleton<Player>
         Shark shark = other.GetComponent<Shark>();
         if (shark != null)
         {
+            sharkHitNum++;
             DamagePanel.Instance.ShowHitEffect();
         }
     }
@@ -94,14 +100,7 @@ public class Player : Singleton<Player>
         }
 
         if (catchableFish != null)
-        {
-            /* Instance fish catching */
-            //fishCatchNum++;
-            //FishManager.Instance.RemoveFish(catchableFish);
-            //CatchLabelManager.Instance.RemoveCatchLabel(catchableFish);
-            //ObjectPoolManager.Instance.Despawn(catchableFish.gameObject);
-            //GamePanel.Instance.UpdateFishNumText();
-            
+        {            
             if (!isCatching)
             {
                 isCatching = true;
@@ -129,9 +128,12 @@ public class Player : Singleton<Player>
         float targetEndPos = targetStartPos + targetAmount;
 
         GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount, threshold);
-        GamePanel.Instance.UpdateCatchingProgress(tmpProgressAmount, threshold);
         GamePanel.Instance.UpdateTargetArea(targetStartPos, targetAmount);
         GamePanel.Instance.UpdateCatchingPanel(true);
+        CatchLabel catchLabel = CatchLabelManager.Instance.GetCatchLabel(fish);
+        catchLabel.UpdateCatchIconVisiability(false);
+        catchLabel.UpdateProgressVisiability(true);
+        catchLabel.UpdateCatchingProgress(tmpProgressAmount, threshold);
 
         while (tmpProgressAmount >= 0 && tmpProgressAmount < threshold)
         {
@@ -143,8 +145,9 @@ public class Player : Singleton<Player>
                 tmpProgressAmount += progressGainSpeed * Time.deltaTime;
             }
 
+            fishCatchTime += Time.deltaTime;
+            catchLabel.UpdateCatchingProgress(tmpProgressAmount, threshold);
             GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount, threshold);
-            GamePanel.Instance.UpdateCatchingProgress(tmpProgressAmount, threshold);
             yield return new WaitForEndOfFrame();
         }
 
@@ -160,7 +163,6 @@ public class Player : Singleton<Player>
             GamePanel.Instance.UpdateFishNumText(fishCatchNum);
         }
 
-        //isCatching = false;
         Invoke(nameof(UnsetPlayerCatching), 1f);
         yield break;
     }

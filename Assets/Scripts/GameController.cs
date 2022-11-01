@@ -97,6 +97,8 @@ public class GameController : Singleton<GameController>
         }
 
         PauseGame();
+        ResultPanel.Instance.UpdateGameResult(
+            Player.Instance.FishCatchNum, Player.Instance.FishCatchTime, Player.Instance.SharkHitNum);
         ResultPanel.Instance.Show();
         yield break;
     }
