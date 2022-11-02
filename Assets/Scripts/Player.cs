@@ -25,19 +25,19 @@ public class Player : Singleton<Player>
     [HideInInspector]
     public float tmpProgressAmount;
     public Image hookDirtImage;
+    public enum State { IDLE, AIMING, CATCHING}
 
     private Rigidbody rigidBody;
     private int fishCatchNum = 0;
     private int sharkHitNum = 0;
     private float fishCatchTime = 0;
     private float directionX;
-    private bool isCatching = false;
+    private State playerState = State.IDLE;
 
-
-    public bool IsCatching => isCatching;
     public int FishCatchNum => fishCatchNum;
     public int SharkHitNum => sharkHitNum;
     public float FishCatchTime => fishCatchTime;
+    public State PlayerState => playerState;
 
 
     protected override void Awake()
@@ -96,9 +96,9 @@ public class Player : Singleton<Player>
 
         if (catchableFish != null)
         {            
-            if (!isCatching)
+            if(playerState != State.CATCHING)
             {
-                isCatching = true;
+                playerState = State.CATCHING;
                 catchableFish.isHooked = true;
                 GamePanel.Instance.catchingPanel.gameObject.SetActive(true);
                 StartCoroutine(FishCatchCoroutine(catchableFish));
@@ -161,13 +161,14 @@ public class Player : Singleton<Player>
             GamePanel.Instance.UpdateFishNumText(fishCatchNum);
         }
 
-        Invoke(nameof(UnsetPlayerCatching), 1f);
+        yield return new WaitForSecondsRealtime(1f);
+        UpdatePlayerState(State.IDLE);
         yield break;
     }
 
-    private void UnsetPlayerCatching()
+    public void UpdatePlayerState(State state = State.IDLE)
     {
-        isCatching = false;
+        playerState = state;
     }
 
     public void UpdateCanvasVisiability(bool visiability)

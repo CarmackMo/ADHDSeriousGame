@@ -721,6 +721,7 @@ GameObject:
   - component: {fileID: 9031177595882878199}
   - component: {fileID: 7661151398733893802}
   - component: {fileID: 3046259895539626779}
+  - component: {fileID: 8106327309005581467}
   m_Layer: 5
   m_Name: TouchArea
   m_TagString: Untagged
@@ -851,6 +852,46 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ignoreChildren: 0
+--- !u!114 &8106327309005581467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3323503554732681028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ae431eff8434b0897d3f7f1cff4311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStateChange:
+    m_PersistentCalls:
+      m_Calls: []
+  basicEditor: 1
+  generalProps: 0
+  limitsProps: 0
+  advancedProps: 0
+  minPointers: 0
+  maxPointers: 0
+  useSendMessage: 0
+  sendStateChangeMessages: 0
+  sendMessageTarget: {fileID: 0}
+  useUnityEvents: 0
+  sendStateChangeEvents: 0
+  requireGestureToFail: {fileID: 0}
+  friendlyGestures: []
+  OnTransformStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTransform:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTransformComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  type: 1
+  screenTransformThreshold: 0.1
+  minScreenPointsDistance: 0.5
 --- !u!1 &3484475754372913737
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,5 +2292,7 @@ MonoBehaviour:
   fishNumText: {fileID: 7782628552184661428}
   initTimerText: {fileID: 6342748739963761610}
   gameTimerText: {fileID: 3051123327227571117}
+  transformGesture: {fileID: 8106327309005581467}
   longPressGesture: {fileID: 7661151398733893802}
   releaseGesture: {fileID: 3046259895539626779}
+  testText: {fileID: 0}
