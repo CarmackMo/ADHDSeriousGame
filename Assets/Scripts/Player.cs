@@ -24,7 +24,8 @@ public class Player : Singleton<Player>
     public float progressAmount = 12f;
     [HideInInspector]
     public float tmpProgressAmount;
-    public Image hookDirtImage;
+    public RectTransform aimingRect;
+    public Transform characterTrans;
     public enum State { IDLE, AIMING, CATCHING}
 
     private Rigidbody rigidBody;
@@ -33,11 +34,14 @@ public class Player : Singleton<Player>
     private float fishCatchTime = 0;
     private float directionX;
     private State playerState = State.IDLE;
+    private Fish targetFish;
+    private Vector2 aimingVec;
 
     public int FishCatchNum => fishCatchNum;
     public int SharkHitNum => sharkHitNum;
     public float FishCatchTime => fishCatchTime;
     public State PlayerState => playerState;
+    public Vector2 AimingVec { get { return aimingVec; } set { aimingVec = value; } }
 
 
     protected override void Awake()
@@ -52,6 +56,7 @@ public class Player : Singleton<Player>
         base.Update();
 
         PlayerMovement();
+        SelectTargetFish();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -102,6 +107,27 @@ public class Player : Singleton<Player>
                 catchableFish.isHooked = true;
                 GamePanel.Instance.catchingPanel.gameObject.SetActive(true);
                 StartCoroutine(FishCatchCoroutine(catchableFish));
+            }
+        }
+    }
+
+    public void SelectTargetFish()
+    {
+        if (playerState == State.AIMING)
+        {
+            float maxCos = 0f;
+            foreach (Fish fish in FishManager.Instance.fishList)
+            {
+                Vector2 playerPos = new Vector2(transform.position.x, transform.position.z);
+                Vector2 fishPos = new Vector2(fish.transform.position.x, fish.transform.position.z);
+                Vector2 fishVec = fishPos - playerPos;
+                float cos = Vector2.Dot(aimingVec, fishVec);
+
+                if (cos > maxCos && fish.catchable == true)
+                {
+                    targetFish = fish;
+                    maxCos = cos;
+                }
             }
         }
     }
@@ -171,9 +197,18 @@ public class Player : Singleton<Player>
         playerState = state;
     }
 
-    public void UpdateCanvasVisiability(bool visiability)
+    public void UpdateAimingVisiability(bool visiability)
     {
-        hookDirtImage.gameObject.SetActive(visiability);
+        aimingRect.gameObject.SetActive(visiability);
+    }
+
+    public void UpdateAimingDirection(float degAngle = 0f)
+    {
+
+        Quaternion UIRotation = Quaternion.Euler(0, 0, degAngle);
+        Quaternion CharaRotation = Quaternion.Euler(0, -degAngle, 0);
+        aimingRect.localRotation = UIRotation;
+        characterTrans.localRotation = CharaRotation;
     }
 
 }

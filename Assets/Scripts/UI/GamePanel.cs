@@ -167,36 +167,43 @@ public class GamePanel : Singleton<GamePanel>
         Debug.Log("Detect long press!!!!!!!!!!");
         if (e.State == Gesture.GestureState.Recognized)
         {
-            Player.Instance.UpdateCanvasVisiability(true);
+            Player.Instance.UpdateAimingVisiability(true);
             Player.Instance.UpdatePlayerState(Player.State.AIMING);
         }
         else if (e.State == Gesture.GestureState.Failed)
         {
-            Player.Instance.UpdateCanvasVisiability(false);
+            Player.Instance.UpdateAimingVisiability(false);
         }
         else if (e.State == Gesture.GestureState.Ended)
         {
-            Player.Instance.UpdateCanvasVisiability(false);
+            Player.Instance.UpdateAimingVisiability(false);
         }
     }
 
     private void ReleaseHandler(object sender, EventArgs e)
     {
-        Player.Instance.UpdateCanvasVisiability(false);
+        Player.Instance.UpdateAimingVisiability(false);
+        Player.Instance.UpdateAimingDirection();
     }
 
     private void TransformGestureHandler(object sender, EventArgs e)
     {        
         Vector2 currPos = transformGesture.ScreenPosition;
         Vector2 delta = currPos - originScreenPos;
-
-
         float distance = Vector2.Distance(currPos, originScreenPos);
         float cos = delta.y / distance;
-        float angle = Mathf.Acos(cos);
+        float radAngle = Mathf.Acos(cos);
+        float degAngle = radAngle * Mathf.Rad2Deg;
+        degAngle = degAngle < 90 ? degAngle : 90; 
+        degAngle = degAngle * (delta.x < 0 ? 1 : -1);
+
+        Player.Instance.AimingVec = delta;
+        Player.Instance.UpdateAimingDirection(degAngle);
+        
+
 
         Debug.Log($"origin: {originScreenPos}, currPos: {currPos}, delta: {delta}");
-        Debug.Log($"distance: {distance}, cos: {cos}, angle: {Mathf.Rad2Deg * angle}");
+        Debug.Log($"distance: {distance}, cos: {cos}, angle: {degAngle}");
         Debug.Log("===============================================================");
     }
 
@@ -204,7 +211,7 @@ public class GamePanel : Singleton<GamePanel>
     {
         Debug.Log("Detect transform@@@@@@@@@@@");
         originScreenPos = transformGesture.ScreenPosition;
-        Player.Instance.UpdateCanvasVisiability(true);
+        Player.Instance.UpdateAimingVisiability(true);
         Player.Instance.UpdatePlayerState(Player.State.AIMING);
     }
 
