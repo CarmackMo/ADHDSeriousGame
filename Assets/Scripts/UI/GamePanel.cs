@@ -25,6 +25,8 @@ public class GamePanel : Singleton<GamePanel>
     public Image rhythmImage;
     public Image progressImage;
 
+    public RectTransform midBound;
+
     public TextMeshProUGUI fishNumText;
     public TextMeshProUGUI initTimerText;
     public TextMeshProUGUI gameTimerText;
@@ -60,7 +62,7 @@ public class GamePanel : Singleton<GamePanel>
     {
         base.Update();
 
-        //OnPressFishingBtn();
+        //OnPressFishingBtn();  
         OnPressing();
     }
 
@@ -167,7 +169,12 @@ public class GamePanel : Singleton<GamePanel>
         Vector3 pos = rect.position;
         pos.x += targetStartPos / 100 * rhythmImage.GetComponent<RectTransform>().sizeDelta.x;
         rect.position = pos;
-        layoutGroup.spacing = targetAmount / 100 * rhythmImage.GetComponent<RectTransform>().sizeDelta.x;
+
+        Vector2 sizeDelta = midBound.sizeDelta;
+        sizeDelta.x = targetAmount / 100 * rhythmImage.GetComponent<RectTransform>().sizeDelta.x;
+        midBound.sizeDelta = sizeDelta;
+
+        //layoutGroup.spacing = targetAmount / 100 * rhythmImage.GetComponent<RectTransform>().sizeDelta.x;
     }
 
     private void ReleaseHandler(object sender, EventArgs e)
