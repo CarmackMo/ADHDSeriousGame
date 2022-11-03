@@ -25,4 +25,14 @@ public class FishManager : Singleton<FishManager>
     {
         fishList.Remove(fish);
     }
+
+    public void ClearAllFish()
+    {
+        while (fishList.Count > 0)
+        {
+            Fish fish = fishList[0];
+            fishList.RemoveAt(0);
+            ObjectPoolManager.Instance.Despawn(fish.gameObject);
+        }
+    }    
 }

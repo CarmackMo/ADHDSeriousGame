@@ -65,5 +65,11 @@ public class CatchLabelManager : Singleton<CatchLabelManager>
         }
     }
 
+    public void ClearCatchLabel()
+    {
+        while(catchLabelDict.Count > 0)
+        {
 
+        }
+    }
 }
