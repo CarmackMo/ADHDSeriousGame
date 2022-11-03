@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class CatchLabel : MonoBehaviour
 {
     public Image progressBar;
-    public Image catchIcon;
+    public Image targetIcon;
+    public Image selectIcon;
     public GameObject progress;
 
     public void Init()
     {
-        catchIcon.gameObject.SetActive(true);
+        targetIcon.gameObject.SetActive(true);
+        selectIcon.gameObject.SetActive(false);
         progress.gameObject.SetActive(false);
     }
 
@@ -20,9 +22,14 @@ public class CatchLabel : MonoBehaviour
         progressBar.fillAmount = progressAmount / threshold;
     }
 
-    public void UpdateCatchIconVisiability(bool visibility)
+    public void UpdateTargetIconVisiability(bool visibility)
     {
-        catchIcon.gameObject.SetActive(visibility);
+        targetIcon.gameObject.SetActive(visibility);
+    }
+
+    public void UpdateSelectIconVisiability(bool visibility)
+    {
+        selectIcon.gameObject.SetActive(visibility);
     }
 
     public void UpdateProgressVisiability(bool visibility)

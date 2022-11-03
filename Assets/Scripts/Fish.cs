@@ -18,6 +18,9 @@ public class Fish : MonoBehaviour
     {
         if (other.gameObject.name == "WallBack")
         {
+            if (this == Player.Instance.TargetFish)
+                Player.Instance.TargetFish = null;
+
             FishManager.Instance.RemoveFish(this);
             CatchLabelManager.Instance.RemoveCatchLabel(this);
             ObjectPoolManager.Instance.Despawn(this.gameObject);

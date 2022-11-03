@@ -19,6 +19,8 @@ public class GamePanel : Singleton<GamePanel>
     public GameObject gameCountDown;
     public GameObject catchingPanel;
     public GameObject targetArea;
+    public GameObject transGestureArea;
+    public GameObject pressGestureArea;
 
     public Image rhythmImage;
     public Image progressImage;
@@ -28,20 +30,13 @@ public class GamePanel : Singleton<GamePanel>
     public TextMeshProUGUI gameTimerText;
 
     public ScreenTransformGesture transformGesture;
-    public LongPressGesture longPressGesture;
     public ReleaseGesture releaseGesture;
 
 
-    private bool isPressFishBtn = false;     
-
+    private bool isPressing = false;     
     private Vector2 originScreenPos = Vector2.zero;
 
-
-    
-
-    public bool IsPressFishBtn { get { return isPressFishBtn; } set { isPressFishBtn = value;} }
-
-
+    public bool IsPressing { get { return isPressing; } set { isPressing = value;} }
 
 
 
@@ -65,21 +60,21 @@ public class GamePanel : Singleton<GamePanel>
     {
         base.Update();
 
-        OnPressFishingBtn();
+        //OnPressFishingBtn();
+        OnPressing();
     }
 
     protected void OnEnable()
     {
         transformGesture.Transformed += TransformGestureHandler;
         transformGesture.TransformStarted += TransformStartHandler;
-        longPressGesture.StateChanged += LongPressedHandler;
         releaseGesture.Released += ReleaseHandler;
     }
 
     protected void OnDisable()
     {
         transformGesture.Transformed -= TransformGestureHandler;
-        longPressGesture.StateChanged -= LongPressedHandler;
+        transformGesture.TransformStarted -= TransformStartHandler;
         releaseGesture.Released -= ReleaseHandler;
     }
 
@@ -97,7 +92,14 @@ public class GamePanel : Singleton<GamePanel>
 
     public void OnPressFishingBtn()
     {
-        if (isPressFishBtn && Player.Instance.PlayerState == Player.State.CATCHING)
+        if (IsPressing && Player.Instance.PlayerState == Player.State.CATCHING)
+            Player.Instance.AddRhythm();
+    }
+
+
+    private void OnPressing()
+    {
+        if (IsPressing && Player.Instance.PlayerState == Player.State.CATCHING)
             Player.Instance.AddRhythm();
     }
 
@@ -106,7 +108,6 @@ public class GamePanel : Singleton<GamePanel>
         GameController.Instance.PauseGame();
         MenuPanel.Instance.Show();
     }
-
 
     public void UpdateFishNumText(int fishCatchNum)
     {
@@ -137,9 +138,16 @@ public class GamePanel : Singleton<GamePanel>
         gameTimerText.text = text;
     }
 
-    public void UpdateCatchingPanel(bool visibility)
+    public void UpdateCatchingPanelVisibility(bool visible)
     {
-        catchingPanel.gameObject.SetActive(visibility);
+        catchingPanel.gameObject.SetActive(visible);
+    }
+
+    public void UpdateTouchAreaVisibility(bool canPress)
+    {
+        isPressing = false;
+        pressGestureArea.SetActive(canPress);
+        transGestureArea.SetActive(!canPress);
     }
 
     public void UpdateCatchingRhythm(float rhythmAmount, float threshold)
@@ -162,28 +170,11 @@ public class GamePanel : Singleton<GamePanel>
         layoutGroup.spacing = targetAmount / 100 * rhythmImage.GetComponent<RectTransform>().sizeDelta.x;
     }
 
-    private void LongPressedHandler(object sender, GestureStateChangeEventArgs e)
-    {
-        Debug.Log("Detect long press!!!!!!!!!!");
-        if (e.State == Gesture.GestureState.Recognized)
-        {
-            Player.Instance.UpdateAimingVisiability(true);
-            Player.Instance.UpdatePlayerState(Player.State.AIMING);
-        }
-        else if (e.State == Gesture.GestureState.Failed)
-        {
-            Player.Instance.UpdateAimingVisiability(false);
-        }
-        else if (e.State == Gesture.GestureState.Ended)
-        {
-            Player.Instance.UpdateAimingVisiability(false);
-        }
-    }
-
     private void ReleaseHandler(object sender, EventArgs e)
     {
         Player.Instance.UpdateAimingVisiability(false);
         Player.Instance.UpdateAimingDirection();
+        Player.Instance.TryCatchFish();
     }
 
     private void TransformGestureHandler(object sender, EventArgs e)
@@ -197,19 +188,18 @@ public class GamePanel : Singleton<GamePanel>
         degAngle = degAngle < 90 ? degAngle : 90; 
         degAngle = degAngle * (delta.x < 0 ? 1 : -1);
 
-        Player.Instance.AimingVec = delta;
+        Player.Instance.AimingVec = delta.normalized;
         Player.Instance.UpdateAimingDirection(degAngle);
         
 
 
-        Debug.Log($"origin: {originScreenPos}, currPos: {currPos}, delta: {delta}");
-        Debug.Log($"distance: {distance}, cos: {cos}, angle: {degAngle}");
-        Debug.Log("===============================================================");
+        //Debug.Log($"origin: {originScreenPos}, currPos: {currPos}, delta: {delta}");
+        //Debug.Log($"distance: {distance}, cos: {cos}, angle: {degAngle}");
+        //Debug.Log("===============================================================");
     }
 
     private void TransformStartHandler(object sender, EventArgs e)
     {
-        Debug.Log("Detect transform@@@@@@@@@@@");
         originScreenPos = transformGesture.ScreenPosition;
         Player.Instance.UpdateAimingVisiability(true);
         Player.Instance.UpdatePlayerState(Player.State.AIMING);

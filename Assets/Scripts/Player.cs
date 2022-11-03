@@ -24,6 +24,8 @@ public class Player : Singleton<Player>
     public float progressAmount = 12f;
     [HideInInspector]
     public float tmpProgressAmount;
+    public float aimingFarThreshold = 10f;
+    public float aimingCloseThreshold = 30f;
     public RectTransform aimingRect;
     public Transform characterTrans;
     public enum State { IDLE, AIMING, CATCHING}
@@ -40,6 +42,7 @@ public class Player : Singleton<Player>
     public int FishCatchNum => fishCatchNum;
     public int SharkHitNum => sharkHitNum;
     public float FishCatchTime => fishCatchTime;
+    public Fish TargetFish { get { return targetFish; } set { targetFish = value; } }
     public State PlayerState => playerState;
     public Vector2 AimingVec { get { return aimingVec; } set { aimingVec = value; } }
 
@@ -115,19 +118,52 @@ public class Player : Singleton<Player>
     {
         if (playerState == State.AIMING)
         {
-            float maxCos = 0f;
+            if (targetFish != null)
+            {
+                CatchLabel oldLabel = CatchLabelManager.Instance.GetCatchLabel(targetFish);
+                oldLabel.UpdateSelectIconVisiability(false);
+            }
+            targetFish = null;
+
             foreach (Fish fish in FishManager.Instance.fishList)
             {
                 Vector2 playerPos = new Vector2(transform.position.x, transform.position.z);
                 Vector2 fishPos = new Vector2(fish.transform.position.x, fish.transform.position.z);
                 Vector2 fishVec = fishPos - playerPos;
-                float cos = Vector2.Dot(aimingVec, fishVec);
+                float cos = Vector2.Dot(aimingVec, fishVec.normalized);
+                float degAngle = Mathf.Rad2Deg * Mathf.Acos(cos);
+                float distance = Vector3.Distance(transform.position, fish.transform.position);
+                float aimingThreshold = distance < 35 ? aimingCloseThreshold : aimingFarThreshold;
 
-                if (cos > maxCos && fish.catchable == true)
+
+                if (degAngle <= aimingThreshold && fish.catchable == true)
                 {
                     targetFish = fish;
-                    maxCos = cos;
+                    CatchLabel newLabel = CatchLabelManager.Instance.GetCatchLabel(fish);
+                    newLabel.UpdateSelectIconVisiability(true);
                 }
+
+                //Debug.Log($"aimingVec: {aimingVec}, fishVec: {fishVec}, cos: {cos}, angle: {degAngle}");
+                //Debug.Log("===============================================================");
+            }
+        }
+    }
+
+    public void TryCatchFish()
+    {
+        if (playerState == State.AIMING)
+        {
+            if (targetFish != null)
+            {
+                targetFish.isHooked = true;
+                GamePanel.Instance.UpdateCatchingPanelVisibility(true);
+                GamePanel.Instance.UpdateTouchAreaVisibility(true);
+                UpdatePlayerState(State.CATCHING);
+                StartCoroutine(FishCatchCoroutine(targetFish));
+            }
+            else
+            {
+                UpdatePlayerState(State.IDLE);
             }
         }
     }
@@ -153,9 +189,10 @@ public class Player : Singleton<Player>
 
         GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount, threshold);
         GamePanel.Instance.UpdateTargetArea(targetStartPos, targetAmount);
-        GamePanel.Instance.UpdateCatchingPanel(true);
+        GamePanel.Instance.UpdateCatchingPanelVisibility(true);
         CatchLabel catchLabel = CatchLabelManager.Instance.GetCatchLabel(fish);
-        catchLabel.UpdateCatchIconVisiability(false);
+        catchLabel.UpdateTargetIconVisiability(false);
+        catchLabel.UpdateSelectIconVisiability(false);
         catchLabel.UpdateProgressVisiability(true);
         catchLabel.UpdateCatchingProgress(tmpProgressAmount, threshold);
 
@@ -175,11 +212,13 @@ public class Player : Singleton<Player>
             yield return new WaitForEndOfFrame();
         }
 
+        targetFish = null;
         FishManager.Instance.RemoveFish(fish);
         CatchLabelManager.Instance.RemoveCatchLabel(fish);
         ObjectPoolManager.Instance.Despawn(fish.gameObject);
         GamePanel.Instance.UpdateTargetArea(-targetStartPos, -targetAmount);
-        GamePanel.Instance.UpdateCatchingPanel(false);
+        GamePanel.Instance.UpdateCatchingPanelVisibility(false);
+        GamePanel.Instance.UpdateTouchAreaVisibility(false);
 
         if (tmpProgressAmount >= threshold)
         {
@@ -187,7 +226,7 @@ public class Player : Singleton<Player>
             GamePanel.Instance.UpdateFishNumText(fishCatchNum);
         }
 
-        yield return new WaitForSecondsRealtime(1f);
+        //yield return new WaitForSecondsRealtime(1f);
         UpdatePlayerState(State.IDLE);
         yield break;
     }
