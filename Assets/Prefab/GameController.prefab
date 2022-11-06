@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6106585846905736443}
   - component: {fileID: 4307177888555527689}
+  - component: {fileID: 5681759896111936116}
   - component: {fileID: 6106585846905736442}
   - component: {fileID: 6106585846905736441}
   - component: {fileID: 4667262333716671946}
@@ -49,6 +50,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameTime: 30
   initTime: 4
+--- !u!114 &5681759896111936116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6106585846905736388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330a0860dd1ab5d41955504b8c7b434a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlThold: 0.4
 --- !u!114 &6106585846905736442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,9 +87,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc2886404f677ae4eb6187cf89aac26e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labelPrefab: {fileID: 853471515148059786, guid: 2fe0d5edd73dd9745809a17ae6df7d92, type: 3}
   camera: {fileID: 0}
   canvas: {fileID: 0}
+  labelPrefab: {fileID: 853471515148059786, guid: 2fe0d5edd73dd9745809a17ae6df7d92, type: 3}
 --- !u!114 &4667262333716671946
 MonoBehaviour:
   m_ObjectHideFlags: 0

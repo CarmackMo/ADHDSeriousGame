@@ -37,10 +37,15 @@ public class MenuPanel : Singleton<MenuPanel>
 
     public void OnClickStartBtn()
     {
-        GameController.Instance.StartInitCountDownRoutine();
         startBtn.gameObject.SetActive(false);
         restartBtn.gameObject.SetActive(true);
         resumeBtn.gameObject.SetActive(true);
+
+        TutorialController.Instance.StartTutorial();
+
+
+        //GameController.Instance.StartInitCountDownRoutine();
+
         Hide();
     }
 

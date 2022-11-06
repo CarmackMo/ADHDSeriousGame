@@ -18,14 +18,16 @@ public class FishGenerator : Singleton<FishGenerator>
     protected override void Start()
     {
         base.Start();
-
-        StartCoroutine(FishSpawnCoroutine());   
     }
-
 
     protected override void Update()
     {
         base.Update();
+    }
+
+    public void StartFishSpawnCoroutine()
+    {
+        StartCoroutine(FishSpawnCoroutine());
     }
 
     IEnumerator FishSpawnCoroutine()

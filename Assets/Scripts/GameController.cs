@@ -69,6 +69,7 @@ public class GameController : Singleton<GameController>
     IEnumerator InitCountDownCoroutine()
     {
         float timer = initTime;
+        GamePanel.Instance.initCountDown.SetActive(true);
 
         while (timer > 0)
         {
@@ -77,10 +78,11 @@ public class GameController : Singleton<GameController>
             yield return new WaitForSecondsRealtime(1f);
         }
 
-        GamePanel.Instance.initCountDown.SetActive(false);
-        GamePanel.Instance.gameCountDown.SetActive(true);
         StartGame();
         StartCoroutine(GameCountdDownCoroutine());
+        FishGenerator.Instance.StartFishSpawnCoroutine();
+        GamePanel.Instance.initCountDown.SetActive(false);
+        GamePanel.Instance.gameCountDown.SetActive(true);
         yield break;
     }
 

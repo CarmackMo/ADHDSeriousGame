@@ -82,7 +82,7 @@ public class GamePanel : Singleton<GamePanel>
 
     public void Init()
     {
-        initCountDown.SetActive(true);
+        //initCountDown.SetActive(false);
         gameCountDown.SetActive(false);
     }
 
