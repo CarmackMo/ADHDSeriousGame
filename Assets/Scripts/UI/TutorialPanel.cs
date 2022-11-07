@@ -10,9 +10,13 @@ public class TutorialPanel : Singleton<TutorialPanel>
     public TextMeshProUGUI testText;
 
     public GameObject controlPanel;
+    public GameObject completePanel;
 
     public ScriptableMask controlMask;
+    public ScriptableMask completeMask;
     
+
+    public enum PanelType { CONTROL, SHARK, COMPLETE}
 
     protected override void Start()
     {
@@ -36,6 +40,59 @@ public class TutorialPanel : Singleton<TutorialPanel>
     }
 
 
+    public void UpdatePanelVisibility(PanelType type, bool canVisit)
+    {
+        switch (type)
+        {
+            case PanelType.CONTROL:
+                controlPanel.SetActive(canVisit);
+                break;
+            case PanelType.SHARK:
+                break;
+            case PanelType.COMPLETE:
+                completePanel.SetActive(canVisit);
+                break;
+            default:
+                controlPanel.SetActive(canVisit);
+                break;
+        }
+    }
+
+    public void UpdateMaskCallBack(PanelType type, bool isAdd, Action callBack)
+    {
+        switch (type)
+        {
+            case PanelType.CONTROL:
+            {
+                if (isAdd)
+                    controlMask.AddCallBack(callBack);
+                else
+                    controlMask.RemoveCallBack(callBack);
+                break;
+            }
+            case PanelType.SHARK:
+            {
+                break;
+            }
+            case PanelType.COMPLETE:
+            {
+                if (isAdd)
+                    completeMask.AddCallBack(callBack);
+                else
+                    completeMask.RemoveCallBack(callBack);
+                break;
+            }
+            default:
+            {
+                if (isAdd)
+                    controlMask.AddCallBack(callBack);
+                else
+                    controlMask.RemoveCallBack(callBack);
+                break;
+            }
+        }
+    }
+
     public void UpdateControlPanelVisibility(bool canVisit)
     {
         controlPanel.SetActive(canVisit);
@@ -48,4 +105,5 @@ public class TutorialPanel : Singleton<TutorialPanel>
         else
             controlMask.RemoveCallBack(callBack);
     }
+
 }

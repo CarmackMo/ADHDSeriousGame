@@ -17,13 +17,6 @@ public class ScriptableMask : MaskableGraphic
 
     private Action callBack;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        rect = GetComponent<RectTransform>();
-
-    }
-
     protected override void OnPopulateMesh(VertexHelper vh)
     {
         vh.Clear();

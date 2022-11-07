@@ -9,7 +9,7 @@ public class TutorialController : Singleton<TutorialController>
 
 
 
-    public enum State { INIT, CONTROL_INTRO, CONTROL, SHARK, COMPLETE}
+    public enum State { IDLE, CONTROL_INTRO, CONTROL_ONGO, SHARK, COMPLETE}
 
     private State tutorialState;
 
@@ -44,13 +44,12 @@ public class TutorialController : Singleton<TutorialController>
 
     public void CompleteTutorial()
     {
-        tutorialState = State.COMPLETE;
         TutorialPanel.Instance.Hide();
         GameController.Instance.PauseGame();
         GameController.Instance.StartInitCountDownRoutine();
     }
 
-    public void UpdateTutorialState(State state = State.INIT)
+    public void UpdateTutorialState(State state = State.IDLE)
     {
         tutorialState = state;
     }
@@ -58,13 +57,14 @@ public class TutorialController : Singleton<TutorialController>
     IEnumerator ControlIntroCoroutine()
     {
         GameController.Instance.PauseGame();
-        TutorialPanel.Instance.UpdateControlPanelVisibility(true);
-        TutorialPanel.Instance.UpdateControlMaskCallBack(() => UpdateTutorialState(State.CONTROL), true);
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.CONTROL, true);
+        TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.CONTROL, true, () => UpdateTutorialState(State.CONTROL_ONGO));
         while (tutorialState == State.CONTROL_INTRO)
         {
             yield return new WaitForEndOfFrame();
         }
-        TutorialPanel.Instance.UpdateControlPanelVisibility(false);
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.CONTROL, false);
+        TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.CONTROL, false, () => UpdateTutorialState(State.CONTROL_ONGO));
         GameController.Instance.StartGame();
         StartCoroutine(ControlCoroutine());
     }
@@ -94,8 +94,24 @@ public class TutorialController : Singleton<TutorialController>
 
 
         yield return new WaitForSecondsRealtime(2f);
-        CompleteTutorial();
+
+        UpdateTutorialState(State.COMPLETE);
+        StartCoroutine(CompleteCoroutine());
     }
 
 
+
+    IEnumerator CompleteCoroutine()
+    {
+        GameController.Instance.PauseGame();
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.COMPLETE, true);
+        TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.COMPLETE, true, () => UpdateTutorialState(State.IDLE));
+        while (tutorialState == State.COMPLETE)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.COMPLETE, false);
+        TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.COMPLETE, false, () => UpdateTutorialState(State.IDLE));
+        CompleteTutorial();
+    }
 }
