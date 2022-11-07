@@ -9,7 +9,7 @@ public class TutorialController : Singleton<TutorialController>
 
 
 
-    public enum State { INIT, CONTROL, SHARK, COMPLETE}
+    public enum State { INIT, CONTROL_INTRO, CONTROL, SHARK, COMPLETE}
 
     private State tutorialState;
 
@@ -37,9 +37,9 @@ public class TutorialController : Singleton<TutorialController>
 
     public void StartTutorial()
     {
-        tutorialState = State.INIT;
+        UpdateTutorialState(State.CONTROL_INTRO);
         GameController.Instance.StartGame();
-        StartCoroutine(ControlCoroutine());
+        StartCoroutine(ControlIntroCoroutine());
     }
 
     public void CompleteTutorial()
@@ -53,6 +53,20 @@ public class TutorialController : Singleton<TutorialController>
     public void UpdateTutorialState(State state = State.INIT)
     {
         tutorialState = state;
+    }
+
+    IEnumerator ControlIntroCoroutine()
+    {
+        GameController.Instance.PauseGame();
+        TutorialPanel.Instance.UpdateControlPanelVisibility(true);
+        TutorialPanel.Instance.UpdateControlMaskCallBack(() => UpdateTutorialState(State.CONTROL), true);
+        while (tutorialState == State.CONTROL_INTRO)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        TutorialPanel.Instance.UpdateControlPanelVisibility(false);
+        GameController.Instance.StartGame();
+        StartCoroutine(ControlCoroutine());
     }
 
     IEnumerator ControlCoroutine()
@@ -79,7 +93,7 @@ public class TutorialController : Singleton<TutorialController>
         }
 
 
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(2f);
         CompleteTutorial();
     }
 
