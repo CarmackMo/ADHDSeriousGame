@@ -115,7 +115,7 @@ public class Player : Singleton<Player>
             if (fish.catchable == true)
             {
                 catchableFish = fish;
-                Instantiate(Water, targetFish.transform.position, Quaternion.identity);
+                //Instantiate(Water, targetFish.transform.position, Quaternion.identity);
 
                 break;
             }
@@ -186,6 +186,10 @@ public class Player : Singleton<Player>
                 GamePanel.Instance.UpdateTouchAreaVisibility(true);
                 UpdatePlayerState(State.CATCHING);
                 StartCoroutine(FishCatchCoroutine(targetFish));
+
+
+                Instantiate(Water, targetFish.transform.position, Quaternion.identity);
+
 
                 if (TutorialController.Instance.TutorialState == TutorialController.State.AIM_END)
                     TutorialController.Instance.UpdateTutorialState(TutorialController.State.CATCH_INTRO);
