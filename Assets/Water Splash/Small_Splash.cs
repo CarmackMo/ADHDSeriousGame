@@ -17,19 +17,19 @@ void Start (){
 
 void Update (){
 
-    if (Input.GetButtonDown("Fire2"))
-    {
-
-        if (splashFlag == 0)
+        /*if (Input.GetButtonDown("Fire2"))
         {
-				StartCoroutine("TriggerSplash");
-        }
-       
+
+            if (splashFlag == 0)
+            {
+                    StartCoroutine("TriggerSplash");
+            }
+
+        }*/
+        StartCoroutine("TriggerSplash");
+
+
     }
-
-
-    
-}
 
    
 IEnumerator TriggerSplash (){
