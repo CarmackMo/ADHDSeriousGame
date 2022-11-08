@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class SharkGenerator : Singleton<SharkGenerator>
 {
-    public GameObject smallFish;
-    public GameObject mediumFish;
-    public GameObject largeFish;
+
     public GameObject shark;
 
     public Vector2 spawnInterval;
     public float leftBound;
     public float rightBound;
-
-    private enum FishType { SMALL, MEDIUM, LARGE, SHARK };
 
     protected override void Start()
     {
@@ -25,44 +21,37 @@ public class SharkGenerator : Singleton<SharkGenerator>
         base.Update();
     }
 
-    public void StartFishSpawnCoroutine()
+    public void StartSharkSpawnCoroutine()
     {
-        StartCoroutine(FishSpawnCoroutine());
+        StartCoroutine(SharkSpawnCoroutine());
     }
 
-    IEnumerator FishSpawnCoroutine()
+    public void StopSharkSpawnCoroutine()
+    {
+        StopAllCoroutines();
+    }
+
+    public Shark SpawnSharkAtPos(Vector3 pos)
+    {
+        GameObject shark = ObjectPoolManager.Instance.Spawn(this.shark, pos, Quaternion.identity);
+        shark.GetComponent<Fish>().Init();
+        FishManager.Instance.AddFish(shark.GetComponent<Fish>());
+        return shark.GetComponent<Shark>();
+    }
+
+    IEnumerator SharkSpawnCoroutine()
     {
         while (true)
         {
             float spawnTime = Random.Range(spawnInterval.x, spawnInterval.y);
             float spawnPosX = Random.Range(leftBound, rightBound);
-            FishType type = (FishType)Random.Range((int)FishType.SMALL, (int)FishType.SHARK + 1);
 
             Vector3 spawnPos = transform.position;
             spawnPos.x = spawnPosX;
 
-            GameObject fish = null;
-            switch (type)
-            {
-                case FishType.SMALL:
-                    fish = ObjectPoolManager.Instance.Spawn(smallFish, spawnPos, Quaternion.identity);
-                    break;
-                case FishType.MEDIUM:
-                    fish = ObjectPoolManager.Instance.Spawn(mediumFish, spawnPos, Quaternion.identity);
-                    break;
-                case FishType.LARGE:
-                    fish = ObjectPoolManager.Instance.Spawn(largeFish, spawnPos, Quaternion.identity);
-                    break;
-                case FishType.SHARK:
-                    fish = ObjectPoolManager.Instance.Spawn(shark, spawnPos, Quaternion.identity);
-                    break;
-                default:
-                    fish = ObjectPoolManager.Instance.Spawn(smallFish, spawnPos, Quaternion.identity);
-                    break;
-            }
-
-            fish.GetComponent<Fish>().Init();
-            FishManager.Instance.AddFish(fish.GetComponent<Fish>());
+            GameObject shark = ObjectPoolManager.Instance.Spawn(this.shark, spawnPos, Quaternion.identity);
+            shark.GetComponent<Fish>().Init();
+            FishManager.Instance.AddFish(shark.GetComponent<Fish>());
 
             yield return new WaitForSeconds(spawnTime);
         }

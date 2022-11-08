@@ -81,6 +81,7 @@ public class GameController : Singleton<GameController>
         StartGame();
         StartCoroutine(GameCountdDownCoroutine());
         FishGenerator.Instance.StartFishSpawnCoroutine();
+        SharkGenerator.Instance.StartSharkSpawnCoroutine();
         GamePanel.Instance.initCountDown.SetActive(false);
         GamePanel.Instance.gameCountDown.SetActive(true);
         yield break;

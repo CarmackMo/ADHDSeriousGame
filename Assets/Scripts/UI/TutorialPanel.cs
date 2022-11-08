@@ -10,13 +10,17 @@ public class TutorialPanel : Singleton<TutorialPanel>
     public TextMeshProUGUI testText;
 
     public GameObject controlPanel;
+    public GameObject sharkPanel;
+    public GameObject catchIntroPanel;
     public GameObject completePanel;
 
     public ScriptableMask controlMask;
+    public ScriptableMask sharkMask;
+    public ScriptableMask catchIntroMask;
     public ScriptableMask completeMask;
     
 
-    public enum PanelType { CONTROL, SHARK, COMPLETE}
+    public enum PanelType { CONTROL, SHARK, CATCH_INTRO, COMPLETE}
 
     protected override void Start()
     {
@@ -48,6 +52,10 @@ public class TutorialPanel : Singleton<TutorialPanel>
                 controlPanel.SetActive(canVisit);
                 break;
             case PanelType.SHARK:
+                sharkPanel.SetActive(canVisit);
+                break;
+            case PanelType.CATCH_INTRO:
+                catchIntroPanel.SetActive(canVisit);
                 break;
             case PanelType.COMPLETE:
                 completePanel.SetActive(canVisit);
@@ -72,6 +80,18 @@ public class TutorialPanel : Singleton<TutorialPanel>
             }
             case PanelType.SHARK:
             {
+                if (isAdd)
+                    sharkMask.AddCallBack(callBack);
+                else
+                    sharkMask.RemoveCallBack(callBack);
+                break;
+            }
+            case PanelType.CATCH_INTRO:
+            {
+                if (isAdd)
+                    catchIntroMask.AddCallBack(callBack);
+                else
+                    catchIntroMask.RemoveCallBack(callBack);
                 break;
             }
             case PanelType.COMPLETE:
