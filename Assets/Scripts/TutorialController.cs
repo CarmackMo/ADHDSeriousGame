@@ -46,6 +46,7 @@ public class TutorialController : Singleton<TutorialController>
     {
         UpdateTutorialState(State.CONTROL_INTRO);
         TutorialPanel.Instance.Show();
+        GamePanel.Instance.UpdateTouchAreaVisibility(true);
         GameController.Instance.StartGame();
 
         StartCoroutine(ControlIntroCoroutine());
@@ -194,7 +195,7 @@ public class TutorialController : Singleton<TutorialController>
             yield return new WaitForEndOfFrame();
         }
         GameController.Instance.StartGame();
-
+        GamePanel.Instance.UpdateTouchAreaVisibility(false);
 
 
 
@@ -265,7 +266,7 @@ public class TutorialController : Singleton<TutorialController>
         sampleFish = FishGenerator.Instance.SpawnFishAtPos(spawnPos);
         sampleFish.Init();
 
-        while (sampleFish.transform.position.z >= 5)
+        while (sampleFish.transform.position.z >= 5 && sampleFish.isHooked == false)
         {
             yield return new WaitForEndOfFrame();
         }
