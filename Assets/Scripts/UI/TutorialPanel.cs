@@ -44,7 +44,7 @@ public class TutorialPanel : Singleton<TutorialPanel>
     protected override void Start()
     {
         base.Start();
-
+        Hide();
         skipBtn.onClick.AddListener(OnClickSkipBtn);
     }
 

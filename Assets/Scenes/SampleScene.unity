@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.57235503, g: 0.46251893, b: 0.42180303, a: 1}
+  m_IndirectSpecularColor: {r: 0.43348336, g: 0.24356136, b: 0.11464562, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1769,6 +1769,10 @@ PrefabInstance:
     - target: {fileID: 8012314853098703015, guid: 5aebb7329b0c7124587d795adeb01c81, type: 3}
       propertyPath: m_Name
       value: TutorialPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012314853098703015, guid: 5aebb7329b0c7124587d795adeb01c81, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5aebb7329b0c7124587d795adeb01c81, type: 3}
