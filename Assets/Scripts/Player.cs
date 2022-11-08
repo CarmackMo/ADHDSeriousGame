@@ -143,6 +143,13 @@ public class Player : Singleton<Player>
                     targetFish = fish;
                     CatchLabel newLabel = CatchLabelManager.Instance.GetCatchLabel(fish);
                     newLabel.UpdateSelectIconVisiability(true);
+
+
+                    if (TutorialController.Instance.TutorialState == TutorialController.State.AIM_ONGO &&
+                        TutorialController.Instance.SampleFish == targetFish)
+                    {
+                        TutorialController.Instance.UpdateTutorialState(TutorialController.State.AIM_END);
+                    }
                 }
 
                 //Debug.Log($"aimingVec: {aimingVec}, fishVec: {fishVec}, cos: {cos}, angle: {degAngle}");
@@ -151,7 +158,7 @@ public class Player : Singleton<Player>
         }
     }
 
-    public void TryCatchFish()
+    public void TryHookFish()
     {
         if (playerState == State.AIMING)
         {
@@ -162,6 +169,9 @@ public class Player : Singleton<Player>
                 GamePanel.Instance.UpdateTouchAreaVisibility(true);
                 UpdatePlayerState(State.CATCHING);
                 StartCoroutine(FishCatchCoroutine(targetFish));
+
+                if (TutorialController.Instance.TutorialState == TutorialController.State.AIM_END)
+                    TutorialController.Instance.UpdateTutorialState(TutorialController.State.COMPLETE);
             }
             else
             {
@@ -226,6 +236,15 @@ public class Player : Singleton<Player>
         {
             fishCatchNum++;
             GamePanel.Instance.UpdateFishNumText(fishCatchNum);
+        }
+
+        if (TutorialController.Instance.TutorialState == TutorialController.State.CATCH_ONGO)
+        {
+            TutorialController.Instance.UpdateTutorialState(TutorialController.State.CATCH_END);
+        }
+        else if (TutorialController.Instance.TutorialState == TutorialController.State.CATCH_RETRY)
+        {
+            TutorialController.Instance.UpdateTutorialState(TutorialController.State.COMPLETE);
         }
 
         //yield return new WaitForSecondsRealtime(1f);

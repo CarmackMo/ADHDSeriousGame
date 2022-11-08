@@ -181,7 +181,7 @@ public class GamePanel : Singleton<GamePanel>
     {
         Player.Instance.UpdateAimingVisiability(false);
         Player.Instance.UpdateAimingDirection();
-        Player.Instance.TryCatchFish();
+        Player.Instance.TryHookFish();
     }
 
     private void TransformGestureHandler(object sender, EventArgs e)

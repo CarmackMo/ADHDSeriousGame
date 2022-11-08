@@ -7,19 +7,21 @@ public class TutorialController : Singleton<TutorialController>
 {
     public float controlThold = 0.4f;
 
-
-
     public enum State { 
         IDLE, 
         CONTROL_INTRO, CONTROL_ONGO, 
         SHARK_INTRO, SHARK_ONGO, 
-        AIM_INTRO, AIM_ONGO, 
+        AIM_INTRO, AIM_ONGO, AIM_END,
+        CATCH_INTRO,CATCH_ONGO, CATCH_END, CATCH_RETRY,
         COMPLETE}
 
+
     private State tutorialState;
+    private Fish sampleFish;
 
 
     public State TutorialState { get { return tutorialState; } set { tutorialState = value; } }
+    public Fish SampleFish { get { return sampleFish; } set { sampleFish = value; } }
 
 
 
@@ -151,14 +153,15 @@ public class TutorialController : Singleton<TutorialController>
     IEnumerator AimIntroCoroutine()
     {
         Vector3 spawnPos = SharkGenerator.Instance.transform.position;
-        Fish fish = FishGenerator.Instance.SpawnFishAtPos(spawnPos);
+        sampleFish = FishGenerator.Instance.SpawnFishAtPos(spawnPos);
+        sampleFish.Init();
 
-        while (fish.transform.position.z >= 10)
+        while (sampleFish.transform.position.z >= 10)
         {
             yield return new WaitForEndOfFrame();
         }
 
-        fish.speed = 0;
+        sampleFish.isHooked = true;
         GameController.Instance.PauseGame();
         TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.AIM_INTRO, true);
         TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.AIM_INTRO, true, null);
@@ -166,26 +169,93 @@ public class TutorialController : Singleton<TutorialController>
         {
             yield return new WaitForEndOfFrame();
         }
-
-
-
-
-
-        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.AIM_INTRO, false);
-        TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.AIM_INTRO, false, null);
         GameController.Instance.StartGame();
 
 
-        UpdateTutorialState(State.COMPLETE);
-        StartCoroutine(CompleteCoroutine());
+
+
+
+
+        while (tutorialState == State.AIM_ONGO)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        GameController.Instance.PauseGame();
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.AIM_END, true);
+        while (tutorialState == State.AIM_END)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.AIM_END, false);
+        UpdateTutorialState(State.CATCH_INTRO);
+        StartCoroutine(CatchIntroCoroutine());
         yield break;
     }
 
-    //IEnumerator AimIntroOngoCoroutine()
-    //{
 
-    //}
+    IEnumerator CatchIntroCoroutine()
+    {
+        GameController.Instance.PauseGame();
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.CATCH_INTRO, true);
+        TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.CATCH_INTRO, true, null);
+        while (tutorialState == State.CATCH_INTRO)
+        {
+            yield return new WaitForEndOfFrame();
+        }
 
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.CATCH_PROGRESS, false);
+        StartCoroutine(CatchOngoCoroutine());
+        yield break;
+    }
+
+
+    IEnumerator CatchOngoCoroutine()
+    {
+        GameController.Instance.StartGame();
+        while (tutorialState == State.CATCH_ONGO)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+
+        GameController.Instance.PauseGame();
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.CATCH_RETRY, true);
+        TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.CATCH_RETRY, true, () => UpdateTutorialState(State.CATCH_RETRY));
+        while (tutorialState == State.CATCH_END)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        GameController.Instance.StartGame();
+        TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.CATCH_RETRY, false);
+        TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.CATCH_RETRY, false, () => UpdateTutorialState(State.CATCH_RETRY));
+
+        StartCoroutine(CatchRetryCoroutine());
+        yield break;
+    }
+
+    IEnumerator CatchRetryCoroutine()
+    {
+        Vector3 spawnPos = SharkGenerator.Instance.transform.position;
+        sampleFish = FishGenerator.Instance.SpawnFishAtPos(spawnPos);
+        sampleFish.Init();
+
+        while (sampleFish.transform.position.z >= 10)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        sampleFish.isHooked = true;
+
+        while (tutorialState == State.CATCH_RETRY)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        StartCoroutine(CompleteCoroutine());
+        yield break;
+    }
 
 
     IEnumerator CompleteCoroutine()
