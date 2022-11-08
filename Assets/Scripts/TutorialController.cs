@@ -181,10 +181,10 @@ public class TutorialController : Singleton<TutorialController>
         yield break;
     }
 
-    IEnumerator AimIntroOngoCoroutine()
-    {
+    //IEnumerator AimIntroOngoCoroutine()
+    //{
 
-    }
+    //}
 
 
 
