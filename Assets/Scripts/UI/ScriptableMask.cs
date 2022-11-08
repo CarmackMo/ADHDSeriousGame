@@ -49,7 +49,7 @@ public class ScriptableMask : MaskableGraphic
 
     public void OnClickMask()
     {
-        callBack.Invoke();
+        callBack?.Invoke();
     }
 
     private void InitVertex(VertexHelper helper)

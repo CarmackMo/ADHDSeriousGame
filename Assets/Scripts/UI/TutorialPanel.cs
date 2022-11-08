@@ -11,16 +11,18 @@ public class TutorialPanel : Singleton<TutorialPanel>
 
     public GameObject controlPanel;
     public GameObject sharkPanel;
-    public GameObject catchIntroPanel;
+    public GameObject aimIntroPanel;
+    public GameObject aimIntroExPanel;
     public GameObject completePanel;
 
     public ScriptableMask controlMask;
     public ScriptableMask sharkMask;
-    public ScriptableMask catchIntroMask;
+    public ScriptableMask aimIntroMask;
+    public ScriptableMask aimIntroExMask;
     public ScriptableMask completeMask;
     
 
-    public enum PanelType { CONTROL, SHARK, CATCH_INTRO, COMPLETE}
+    public enum PanelType { CONTROL, SHARK, AIM_INTRO, AIM_INTRO_EX, COMPLETE}
 
     protected override void Start()
     {
@@ -54,8 +56,11 @@ public class TutorialPanel : Singleton<TutorialPanel>
             case PanelType.SHARK:
                 sharkPanel.SetActive(canVisit);
                 break;
-            case PanelType.CATCH_INTRO:
-                catchIntroPanel.SetActive(canVisit);
+            case PanelType.AIM_INTRO:
+                aimIntroPanel.SetActive(canVisit);
+                break;
+            case PanelType.AIM_INTRO_EX:
+                aimIntroExPanel.SetActive(canVisit);
                 break;
             case PanelType.COMPLETE:
                 completePanel.SetActive(canVisit);
@@ -86,12 +91,20 @@ public class TutorialPanel : Singleton<TutorialPanel>
                     sharkMask.RemoveCallBack(callBack);
                 break;
             }
-            case PanelType.CATCH_INTRO:
+            case PanelType.AIM_INTRO:
             {
                 if (isAdd)
-                    catchIntroMask.AddCallBack(callBack);
+                    aimIntroMask.AddCallBack(ShowAimIntroEx);
                 else
-                    catchIntroMask.RemoveCallBack(callBack);
+                    aimIntroMask.RemoveCallBack(ShowAimIntroEx);
+                break;
+            }
+            case PanelType.AIM_INTRO_EX:
+            {
+                if (isAdd)
+                    aimIntroMask.AddCallBack(callBack);
+                else
+                    aimIntroMask.RemoveCallBack(callBack);
                 break;
             }
             case PanelType.COMPLETE:
@@ -113,17 +126,10 @@ public class TutorialPanel : Singleton<TutorialPanel>
         }
     }
 
-    public void UpdateControlPanelVisibility(bool canVisit)
+    public void ShowAimIntroEx()
     {
-        controlPanel.SetActive(canVisit);
-    }
-
-    public void UpdateControlMaskCallBack(Action callBack, bool isAdd)
-    {
-        if (isAdd)
-            controlMask.AddCallBack(callBack);
-        else
-            controlMask.RemoveCallBack(callBack);
+        UpdatePanelVisibility(PanelType.AIM_INTRO, false);
+        UpdatePanelVisibility(PanelType.AIM_INTRO_EX, true);
     }
 
 }

@@ -9,6 +9,7 @@ public class Fish : MonoBehaviour
     public bool isHooked = false;
 
 
+
     protected void Update()
     {
         FishMovement();
