@@ -39,9 +39,14 @@ public class Player : Singleton<Player>
     private Fish targetFish;
     private Vector2 aimingVec;
 
+    private float tmpTargetAmount;
+    private float tmpTargetStartPos;
+
     public int FishCatchNum => fishCatchNum;
     public int SharkHitNum => sharkHitNum;
     public float FishCatchTime => fishCatchTime;
+    public float TmpTargetAmount => tmpTargetAmount;
+    public float TmpTargetStartPos => tmpTargetStartPos;
     public Fish TargetFish { get { return targetFish; } set { targetFish = value; } }
     public State PlayerState => playerState;
     public Vector2 AimingVec { get { return aimingVec; } set { aimingVec = value; } }
@@ -58,7 +63,7 @@ public class Player : Singleton<Player>
     {
         base.Update();
 
-        PlayerMovement();
+        Movement();
         SelectTargetFish();
     }
     private void OnTriggerEnter(Collider other)
@@ -71,7 +76,17 @@ public class Player : Singleton<Player>
         }
     }
 
-    private void PlayerMovement()
+    public void Init()
+    {
+        fishCatchNum = 0;
+        sharkHitNum = 0;
+        fishCatchTime = 0;
+        playerState = State.IDLE;
+        targetFish = null;
+        StopAllCoroutines();
+    }
+
+    private void Movement()
     {
         #if UNITY_ANDROID
             directionX = Input.acceleration.x;
@@ -111,7 +126,7 @@ public class Player : Singleton<Player>
                 playerState = State.CATCHING;
                 catchableFish.isHooked = true;
                 GamePanel.Instance.catchingPanel.gameObject.SetActive(true);
-                StartCoroutine(FishCatchCoroutine(catchableFish));
+                //StartCoroutine(FishCatchCoroutine(catchableFish));
             }
         }
     }
@@ -171,7 +186,7 @@ public class Player : Singleton<Player>
                 StartCoroutine(FishCatchCoroutine(targetFish));
 
                 if (TutorialController.Instance.TutorialState == TutorialController.State.AIM_END)
-                    TutorialController.Instance.UpdateTutorialState(TutorialController.State.COMPLETE);
+                    TutorialController.Instance.UpdateTutorialState(TutorialController.State.CATCH_INTRO);
             }
             else
             {
@@ -198,6 +213,8 @@ public class Player : Singleton<Player>
         float targetAmount = Random.Range(targetLowBound, targetUpBound);
         float targetStartPos = Random.Range(targetLimit, 100 - targetLimit - targetAmount);
         float targetEndPos = targetStartPos + targetAmount;
+        tmpTargetAmount = targetAmount;
+        tmpTargetStartPos = targetStartPos;
 
         GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount, threshold);
         GamePanel.Instance.UpdateTargetArea(targetStartPos, targetAmount);

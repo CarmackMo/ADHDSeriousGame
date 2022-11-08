@@ -9,6 +9,8 @@ public class TutorialPanel : Singleton<TutorialPanel>
 {
     public TextMeshProUGUI testText;
 
+    public Button skipBtn;
+
     public GameObject controlPanel;
     public GameObject sharkPanel;
     public GameObject aimIntroPanel;
@@ -42,7 +44,8 @@ public class TutorialPanel : Singleton<TutorialPanel>
     protected override void Start()
     {
         base.Start();
-        
+
+        skipBtn.onClick.AddListener(OnClickSkipBtn);
     }
 
     public void Show()
@@ -60,6 +63,14 @@ public class TutorialPanel : Singleton<TutorialPanel>
         testText.text = $"{directX}";
     }
 
+    public void OnClickSkipBtn()
+    {
+        for (int i = (int)PanelType.CONTROL; i <= (int)PanelType.COMPLETE; i++)
+        {
+            UpdatePanelVisibility((PanelType)i, false);
+        }
+        TutorialController.Instance.SkipTutorial();
+    }
 
     public void UpdatePanelVisibility(PanelType type, bool canVisit)
     {

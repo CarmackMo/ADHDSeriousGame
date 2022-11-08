@@ -45,13 +45,15 @@ public class TutorialController : Singleton<TutorialController>
     public void StartTutorial()
     {
         UpdateTutorialState(State.CONTROL_INTRO);
+        TutorialPanel.Instance.Show();
         GameController.Instance.StartGame();
-        //StartCoroutine(ControlIntroCoroutine());
+
+        StartCoroutine(ControlIntroCoroutine());
 
 
-        /* Test */
-        UpdateTutorialState(State.AIM_INTRO);
-        StartCoroutine(AimIntroCoroutine());
+        ///* Test */
+        //UpdateTutorialState(State.AIM_INTRO);
+        //StartCoroutine(AimIntroCoroutine());
     }
 
     public void CompleteTutorial()
@@ -59,6 +61,28 @@ public class TutorialController : Singleton<TutorialController>
         TutorialPanel.Instance.Hide();
         GameController.Instance.PauseGame();
         GameController.Instance.StartInitCountDownRoutine();
+    }
+
+    public void SkipTutorial()
+    {
+        if (sampleFish != null)
+        {
+            
+            FishManager.Instance.RemoveFish(sampleFish);
+            CatchLabelManager.Instance.RemoveCatchLabel(sampleFish);
+            ObjectPoolManager.Instance.Despawn(sampleFish.gameObject);
+            GamePanel.Instance.UpdateTargetArea(-Player.Instance.TmpTargetStartPos, -Player.Instance.TmpTargetAmount);
+            GamePanel.Instance.UpdateCatchingPanelVisibility(false);
+            GamePanel.Instance.UpdateTouchAreaVisibility(false);
+            sampleFish = null;
+        }
+        Player.Instance.Init();
+        FishManager.Instance.ClearAllFish();
+        FishGenerator.Instance.StopAllCoroutines();
+        SharkGenerator.Instance.StopAllCoroutines();
+        UpdateTutorialState(State.COMPLETE);
+        StopAllCoroutines();
+        CompleteTutorial();
     }
 
     public void UpdateTutorialState(State state = State.IDLE)
@@ -156,7 +180,7 @@ public class TutorialController : Singleton<TutorialController>
         sampleFish = FishGenerator.Instance.SpawnFishAtPos(spawnPos);
         sampleFish.Init();
 
-        while (sampleFish.transform.position.z >= 10)
+        while (sampleFish.transform.position.z >= 5)
         {
             yield return new WaitForEndOfFrame();
         }
@@ -241,7 +265,7 @@ public class TutorialController : Singleton<TutorialController>
         sampleFish = FishGenerator.Instance.SpawnFishAtPos(spawnPos);
         sampleFish.Init();
 
-        while (sampleFish.transform.position.z >= 10)
+        while (sampleFish.transform.position.z >= 5)
         {
             yield return new WaitForEndOfFrame();
         }
