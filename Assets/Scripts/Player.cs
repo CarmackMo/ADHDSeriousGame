@@ -51,6 +51,8 @@ public class Player : Singleton<Player>
     public State PlayerState => playerState;
     public Vector2 AimingVec { get { return aimingVec; } set { aimingVec = value; } }
 
+    public GameObject Water;
+
 
     protected override void Awake()
     {
@@ -113,6 +115,8 @@ public class Player : Singleton<Player>
             if (fish.catchable == true)
             {
                 catchableFish = fish;
+                Instantiate(Water, targetFish.transform.position, Quaternion.identity);
+
                 break;
             }
         }
