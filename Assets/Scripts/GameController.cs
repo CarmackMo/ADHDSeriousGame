@@ -52,6 +52,12 @@ public class GameController : Singleton<GameController>
 
     public void RestartGame()
     {
+        PauseGame();
+        TutorialController.Instance.StopAllCoroutines();
+        Player.Instance.StopAllCoroutines();
+        FishManager.Instance.ClearAllFish();
+        CatchLabelManager.Instance.ClearCatchLabel();
+
         SceneManager.LoadScene(0);
     }
 

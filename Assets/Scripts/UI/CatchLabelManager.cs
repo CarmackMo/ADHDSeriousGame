@@ -67,9 +67,10 @@ public class CatchLabelManager : Singleton<CatchLabelManager>
 
     public void ClearCatchLabel()
     {
-        while(catchLabelDict.Count > 0)
+        foreach(var pair in catchLabelDict)
         {
-
+            ObjectPoolManager.Instance.Despawn(pair.Value.gameObject);
         }
+        catchLabelDict.Clear();
     }
 }

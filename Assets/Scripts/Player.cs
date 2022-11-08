@@ -91,18 +91,16 @@ public class Player : Singleton<Player>
         #if UNITY_ANDROID
             directionX = Input.acceleration.x;
             TutorialPanel.Instance.UpdateTestText(Input.acceleration.x);
-#else
+        #else
             directionX = Input.GetAxis("Horizontal");
             TutorialPanel.Instance.UpdateTestText(directionX);
-
-            if (Input.GetKey(KeyCode.Space))
-                GamePanel.Instance.OnClickFishingBtn();
-            else if (Input.GetKey(KeyCode.Escape))
+            
+            if (Input.GetKey(KeyCode.Escape))
             {
                 GameController.Instance.PauseGame();
                 MenuPanel.Instance.Show();
             }
-#endif
+        #endif
 
         rigidBody.velocity = new Vector3(directionX * speed, 0, 0);
     }

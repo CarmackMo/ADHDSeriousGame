@@ -60,6 +60,7 @@ public class TutorialController : Singleton<TutorialController>
     public void CompleteTutorial()
     {
         TutorialPanel.Instance.Hide();
+        GamePanel.Instance.UpdateTouchAreaVisibility(false);
         GameController.Instance.PauseGame();
         GameController.Instance.StartInitCountDownRoutine();
     }
