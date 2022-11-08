@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ead5924abddf4048b9ea6cebaba54aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shark: {fileID: 5409062342491650926, guid: 6af48cadd9ac76b4d992a26b42fbe3fc, type: 3}
+  shark: {fileID: 8572978881857857527, guid: 38561a8548dae51439581d2c2dee61ad, type: 3}
   spawnInterval: {x: 2, y: 4}
   leftBound: -11
   rightBound: 11
