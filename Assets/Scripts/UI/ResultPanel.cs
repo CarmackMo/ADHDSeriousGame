@@ -49,8 +49,11 @@ public class ResultPanel : Singleton<ResultPanel>
 
         string text = "";
         float averageTime = fishCatchTime / fishCatchNum;
+        averageTime = averageTime < 0 ? 0 : averageTime;
         float sec = averageTime % 60;
         float min = averageTime / 60;
+        sec = sec < 0 ? 0 : sec;
+        min = min < 0 ? 0 : min;
 
         if (min < 10)
             text += $"0{(int)min}";

@@ -15,6 +15,7 @@ public class CatchLabel : MonoBehaviour
         targetIcon.gameObject.SetActive(true);
         selectIcon.gameObject.SetActive(false);
         progress.gameObject.SetActive(false);
+        transform.SetAsFirstSibling();
     }
 
     public void UpdateCatchingProgress(float progressAmount, float threshold)
