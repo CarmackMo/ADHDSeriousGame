@@ -28,6 +28,7 @@ public class Player : Singleton<Player>
     public float aimingCloseThreshold = 30f;
     public RectTransform aimingRect;
     public Transform characterTrans;
+    public List<Fish> caughtFishList;
     public enum State { IDLE, AIMING, CATCHING}
 
     private Rigidbody rigidBody;
@@ -51,8 +52,6 @@ public class Player : Singleton<Player>
     public State PlayerState => playerState;
     public Vector2 AimingVec { get { return aimingVec; } set { aimingVec = value; } }
 
-    public GameObject Water;
-
 
     protected override void Awake()
     {
@@ -75,6 +74,7 @@ public class Player : Singleton<Player>
         {
             sharkHitNum++;
             DamagePanel.Instance.ShowHitEffect();
+            Handheld.Vibrate();
         }
     }
 
@@ -85,6 +85,12 @@ public class Player : Singleton<Player>
         fishCatchTime = 0;
         playerState = State.IDLE;
         targetFish = null;
+        
+        foreach(Fish fish in caughtFishList)
+        {
+            fish.gameObject.SetActive(false);
+        }
+        
         StopAllCoroutines();
     }
 
@@ -272,6 +278,7 @@ public class Player : Singleton<Player>
         }
 
         //yield return new WaitForSecondsRealtime(1f);
+        UpdateCaughtFish();
         UpdatePlayerState(State.IDLE);
         yield break;
     }
@@ -288,11 +295,24 @@ public class Player : Singleton<Player>
 
     public void UpdateAimingDirection(float degAngle = 0f)
     {
-
         Quaternion UIRotation = Quaternion.Euler(0, 0, degAngle);
         Quaternion CharaRotation = Quaternion.Euler(0, -degAngle, 0);
         aimingRect.localRotation = UIRotation;
         characterTrans.localRotation = CharaRotation;
+    }
+
+    public void UpdateCaughtFish()
+    {
+        if (fishCatchNum >= 1)
+            caughtFishList[0].gameObject.SetActive(true);
+        if (fishCatchNum >= 2)
+            caughtFishList[1].gameObject.SetActive(true);
+        if (fishCatchNum >= 4)
+            caughtFishList[2].gameObject.SetActive(true);
+        if (fishCatchNum >= 6)
+            caughtFishList[3].gameObject.SetActive(true);
+        if (fishCatchNum >= 10)
+            caughtFishList[4].gameObject.SetActive(true);
     }
 
 }
