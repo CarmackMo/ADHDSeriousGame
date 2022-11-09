@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1028573522625800}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.331, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -50,7 +50,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4932,7 +4932,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9825,7 +9825,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1809369911435248}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.043, z: 0.0889}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0889}
   m_LocalScale: {x: 0.91161, y: 0.91161, z: 0.31149763}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9847,9 +9847,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 0
+  looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -14616,7 +14616,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ade0e4a0216365848b08e42593925a97, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -14746,4 +14746,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a3dc59286852cd4ca876515b2c25e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SmallSplash: {fileID: 1396836365235230}
+  splash: {fileID: 1396836365235230}
+  jetEffect: {fileID: 198843306148320316}
+  rippleEffect: {fileID: 198584563275331398}
+  sprayEffect: {fileID: 198003590464478442}
+  effectAudio: {fileID: 82888813304329062}

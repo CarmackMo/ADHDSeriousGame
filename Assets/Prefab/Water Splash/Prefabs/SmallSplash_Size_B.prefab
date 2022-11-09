@@ -45,7 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a3dc59286852cd4ca876515b2c25e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SmallSplash: {fileID: 1312695369310092}
+  splash: {fileID: 1312695369310092}
+  jetEffect: {fileID: 198215767879561690}
+  rippleEffect: {fileID: 198059165584361278}
+  sprayEffect: {fileID: 198683639017234188}
+  effectAudio: {fileID: 82265973152053630}
 --- !u!1 &1312695369310092
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +135,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -5013,7 +5017,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9780,7 +9784,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 86d1b399b03aefa49aeab36a8815de4b, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -9915,7 +9919,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:

@@ -8,7 +8,7 @@ public class Fish : MonoBehaviour
     public bool catchable = false;
     public bool isHooked = false;
 
-
+    public SmallSplash splash;
 
     protected void Update()
     {
@@ -48,4 +48,13 @@ public class Fish : MonoBehaviour
             transform.Translate(new Vector3(0, 0, -speed) * Time.deltaTime);
     }
 
+    public void PlayFishSplachEffect()
+    {
+        splash.PlaySplaceEffect();
+    }
+
+    public bool IsSplashEffectPlaying()
+    {
+        return splash.jetEffect.isPlaying;
+    }
 }

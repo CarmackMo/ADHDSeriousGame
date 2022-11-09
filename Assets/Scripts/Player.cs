@@ -180,14 +180,11 @@ public class Player : Singleton<Player>
             if (targetFish != null)
             {
                 targetFish.isHooked = true;
+                targetFish.PlayFishSplachEffect();
                 GamePanel.Instance.UpdateCatchingPanelVisibility(true);
                 GamePanel.Instance.UpdateTouchAreaVisibility(true);
                 UpdatePlayerState(State.CATCHING);
                 StartCoroutine(FishCatchCoroutine(targetFish));
-
-
-                Instantiate(Water, targetFish.transform.position, Quaternion.identity);
-
 
                 if (TutorialController.Instance.TutorialState == TutorialController.State.AIM_END)
                     TutorialController.Instance.UpdateTutorialState(TutorialController.State.CATCH_INTRO);
@@ -242,6 +239,13 @@ public class Player : Singleton<Player>
             fishCatchTime += Time.deltaTime;
             catchLabel.UpdateCatchingProgress(tmpProgressAmount, threshold);
             GamePanel.Instance.UpdateCatchingRhythm(tmpRhythmAmount, threshold);
+            yield return new WaitForEndOfFrame();
+        }
+
+        targetFish.PlayFishSplachEffect();
+
+        while (targetFish.IsSplashEffectPlaying())
+        {
             yield return new WaitForEndOfFrame();
         }
 
