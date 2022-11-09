@@ -115,8 +115,6 @@ public class Player : Singleton<Player>
             if (fish.catchable == true)
             {
                 catchableFish = fish;
-                //Instantiate(Water, targetFish.transform.position, Quaternion.identity);
-
                 break;
             }
         }
