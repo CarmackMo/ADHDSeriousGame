@@ -48,7 +48,7 @@ public class ResultPanel : Singleton<ResultPanel>
         sharkHitText.text = $"{sharkHitNum}";
 
         string text = "";
-        float averageTime = fishCatchTime / fishCatchNum;
+        float averageTime = fishCatchNum == 0 ? 0 : fishCatchTime / fishCatchNum;
         averageTime = averageTime < 0 ? 0 : averageTime;
         float sec = averageTime % 60;
         float min = averageTime / 60;
