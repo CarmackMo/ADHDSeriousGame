@@ -242,20 +242,19 @@ public class Player : Singleton<Player>
             yield return new WaitForEndOfFrame();
         }
 
-        targetFish.PlayFishSplachEffect();
+        CatchLabelManager.Instance.RemoveCatchLabel(fish);
+        GamePanel.Instance.UpdateTargetArea(-targetStartPos, -targetAmount);
+        GamePanel.Instance.UpdateCatchingPanelVisibility(false);
+        GamePanel.Instance.UpdateTouchAreaVisibility(false);
 
+        targetFish.PlayFishSplachEffect();
         while (targetFish.IsSplashEffectPlaying())
         {
             yield return new WaitForEndOfFrame();
         }
-
         targetFish = null;
         FishManager.Instance.RemoveFish(fish);
-        CatchLabelManager.Instance.RemoveCatchLabel(fish);
         ObjectPoolManager.Instance.Despawn(fish.gameObject);
-        GamePanel.Instance.UpdateTargetArea(-targetStartPos, -targetAmount);
-        GamePanel.Instance.UpdateCatchingPanelVisibility(false);
-        GamePanel.Instance.UpdateTouchAreaVisibility(false);
 
         if (tmpProgressAmount >= threshold)
         {
