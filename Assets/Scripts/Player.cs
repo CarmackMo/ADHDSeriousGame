@@ -187,6 +187,7 @@ public class Player : Singleton<Player>
             {
                 targetFish.isHooked = true;
                 targetFish.PlayFishSplachEffect();
+                targetFish.UpdateAnimatorState(true, false);
                 GamePanel.Instance.UpdateCatchingPanelVisibility(true);
                 GamePanel.Instance.UpdateTouchAreaVisibility(true);
                 UpdatePlayerState(State.CATCHING);
@@ -253,9 +254,12 @@ public class Player : Singleton<Player>
         GamePanel.Instance.UpdateCatchingPanelVisibility(false);
         GamePanel.Instance.UpdateTouchAreaVisibility(false);
 
+        targetFish.UpdateAnimatorState(false, true);
         targetFish.PlayFishSplachEffect();
+        
         while (targetFish.IsSplashEffectPlaying())
         {
+            targetFish.transform.Translate(0, 2 * Time.deltaTime, 0);
             yield return new WaitForEndOfFrame();
         }
         targetFish = null;

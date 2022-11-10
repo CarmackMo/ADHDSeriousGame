@@ -8,6 +8,7 @@ public class Fish : MonoBehaviour
     public bool catchable = false;
     public bool isHooked = false;
 
+    public Animator animator;
     public SmallSplash splash;
 
     protected void Update()
@@ -40,6 +41,7 @@ public class Fish : MonoBehaviour
     {
         catchable = false;
         isHooked = false;
+        UpdateAnimatorState(false, false);
     }
 
     public void FishMovement()
@@ -56,5 +58,23 @@ public class Fish : MonoBehaviour
     public bool IsSplashEffectPlaying()
     {
         return splash.jetEffect.isPlaying;
+    }
+
+    public void UpdateAnimatorState(bool isHook, bool isCatch)
+    {
+        animator.SetBool("isHook", isHook);
+        animator.SetBool("isCatch", isCatch);
+    }
+
+    public bool IsPlayingCatchAnim()
+    {
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+
+        Debug.Log($"IsName: {info.IsName("Catch")}");
+
+        if (info.normalizedTime > 0.95f && info.IsName("Catch"))
+            return true;
+        else 
+            return false;
     }
 }

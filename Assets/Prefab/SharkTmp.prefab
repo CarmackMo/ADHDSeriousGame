@@ -160,6 +160,8 @@ MonoBehaviour:
   speed: 35
   catchable: 0
   isHooked: 0
+  animator: {fileID: 8572978882239385448}
+  splash: {fileID: 0}
 --- !u!1001 &8572978882239385453
 PrefabInstance:
   m_ObjectHideFlags: 0

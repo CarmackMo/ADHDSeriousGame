@@ -188,6 +188,7 @@ public class TutorialController : Singleton<TutorialController>
         }
 
         sampleFish.isHooked = true;
+        sampleFish.UpdateAnimatorState(true, false);
         GameController.Instance.PauseGame();
         TutorialPanel.Instance.UpdatePanelVisibility(TutorialPanel.PanelType.AIM_INTRO, true);
         TutorialPanel.Instance.UpdateMaskCallBack(TutorialPanel.PanelType.AIM_INTRO, true, null);
@@ -273,7 +274,7 @@ public class TutorialController : Singleton<TutorialController>
         }
 
         sampleFish.isHooked = true;
-
+        sampleFish.UpdateAnimatorState(true, false);
         while (tutorialState == State.CATCH_RETRY)
         {
             yield return new WaitForEndOfFrame();
