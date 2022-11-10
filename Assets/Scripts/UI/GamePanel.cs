@@ -138,6 +138,11 @@ public class GamePanel : Singleton<GamePanel>
             text += $":{(int)sec}";
 
         gameTimerText.text = text;
+
+        if (second < 10f)
+            gameTimerText.color = Color.red;
+        else
+            gameTimerText.color = Color.white;
     }
 
     public void UpdateCatchingPanelVisibility(bool visible)
