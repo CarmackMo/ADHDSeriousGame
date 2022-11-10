@@ -74,7 +74,10 @@ public class Player : Singleton<Player>
         {
             sharkHitNum++;
             DamagePanel.Instance.ShowHitEffect();
-            Handheld.Vibrate();
+
+            #if UNITY_ANDROID
+                Handheld.Vibrate();
+            #endif
         }
     }
 
@@ -96,10 +99,10 @@ public class Player : Singleton<Player>
 
     private void Movement()
     {
-        #if UNITY_ANDROID
+#if UNITY_ANDROID
             directionX = Input.acceleration.x;
             TutorialPanel.Instance.UpdateTestText(Input.acceleration.x);
-        #else
+#else
             directionX = Input.GetAxis("Horizontal");
             TutorialPanel.Instance.UpdateTestText(directionX);
             
@@ -108,7 +111,7 @@ public class Player : Singleton<Player>
                 GameController.Instance.PauseGame();
                 MenuPanel.Instance.Show();
             }
-        #endif
+#endif
 
         rigidBody.velocity = new Vector3(directionX * speed, 0, 0);
     }
