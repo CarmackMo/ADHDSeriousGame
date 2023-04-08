@@ -5,9 +5,9 @@
 
 *Attention Deficit and Hyperactivity Disorder (ADHD)* is a neurobehavioral disorder that commonly seen in children. A professional disgnosis is needed to determine whether a child has ADHD, which is time consuming and cost a lot. The serious game of this project is designed for testing player's concentration level. Although the result of the game cannot conclude whether the player has ADHD symptoms, it can be a useful reference for doctors to proceed more precise diagnosises. This serious game provides gneral families a pre-treatment solution to potential ADHD symtoms on their children, which is light-weight and cheap.
 
-Game for Android can be download there: [AndroidBuild](AndroidBuild/).
++ Game for Android can be downloaded there: [AndroidBuild](AndroidBuild/).
 
-Game for Windows can be download there: [WindowsBuild](WindowsBuild/).
++ Game for Windows can be downloaded there: [WindowsBuild](WindowsBuild/).
 
 ## Gameplay Information
 
