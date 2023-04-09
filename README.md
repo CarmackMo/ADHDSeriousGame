@@ -9,6 +9,8 @@
 
 + Game for Windows can be downloaded there: [WindowsBuild](WindowsBuild/).
 
+[![Playtest Video](https://img.youtube.com/vi/Ws5t3mLfgKA/0.jpg)](https://www.youtube.com/watch?v=Ws5t3mLfgKA)
+
 ## Gameplay Information
 
 This serious game test the level of player's contration in three dimension.
