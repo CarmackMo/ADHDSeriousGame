@@ -9,6 +9,9 @@
 
 + Game for Windows can be downloaded there: [WindowsBuild](WindowsBuild/).
 
+
+A playtest video for this game can be viewed by clicking this [link](https://youtu.be/Ws5t3mLfgKA), or by clicking the image below, which will redirect you to the video webpage.
+
 [![Playtest Video](https://img.youtube.com/vi/Ws5t3mLfgKA/0.jpg)](https://www.youtube.com/watch?v=Ws5t3mLfgKA)
 
 ## Gameplay Information
